@@ -7,6 +7,7 @@ import {
 } from '../../util/validationSchemas'
 import FamilyandFinancialInfo from '../../components/FamilyandFinancialInfo '
 import SituationDetails from '../../components/SituationDetails'
+import Confirmation from '../../components/Confirmation'
 import {useForm, FormProvider} from 'react-hook-form'
 import {
   Box,
@@ -24,7 +25,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import ProgressBar from '../../components/ProgressBar'
 import {useSelector, useDispatch} from 'react-redux'
-import {next, goBack} from '../../store/formSlice'
+import {next, goBack, createUserProfile} from '../../store/formSlice'
 import dayjs from 'dayjs'
 import {LanguageSwitch} from '../../components/LanguageSwitch'
 
@@ -80,7 +81,7 @@ const Form = () => {
       case 3:
         return <SituationDetails />
       default:
-        console.log('Unknown step')
+        return <Confirmation />
     }
   }
 
@@ -105,10 +106,10 @@ const Form = () => {
     const {dateOfBirth} = formValues
     formValues.dateOfBirth = dateOfBirth.format('MM/DD/YYYY')
     console.log({formValues})
-    // if (isStepValid) {
+    if(currentStep === 3)
+      dispatch(createUserProfile(formState))
+    else
     dispatch(next(formValues))
-
-    // }
   }
   const [isCtaDisabled, setIsCtaDisabled] = useState(false)
   const steps = [
@@ -132,13 +133,13 @@ const Form = () => {
         elevation={3}
         className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col md:h-[780px] mx-auto md:w-[940px] pt-4 px-[15px] pb-[15px]">
         <ProgressBar steps={steps} />
-        <Box className="p-4 lg:p-8">
+        <Box className="p-4 lg:pt-4">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <FormProvider {...methods}>
               {getStepContent()}
               <Box
                 className={`flex flex-col-reverse sm:flex-row items-end grow gap-4 md:pb-48 sm:pb-0 mt-8 mb-8 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
-                {currentStep !== 1 && (
+                {currentStep !== 1 && currentStep !== 4 && (
                   <Button
                     className="w-full sm:w-fit md:w-[15rem]"
                     startIcon={<ChevronLeftRoundedIcon />}
@@ -147,14 +148,16 @@ const Form = () => {
                     Go Back
                   </Button>
                 )}
-                <Button
-                  variant="contained"
-                  endIcon={<ChevronRightRoundedIcon />}
-                  disabled={isCtaDisabled}
-                  onClick={handleNext}
-                  className="w-full sm:w-fit md:w-[15rem]">
-                  {currentStep === steps.length ? 'confirm' : 'Next'}
-                </Button>
+                {currentStep !== 4 && (
+                  <Button
+                    variant="contained"
+                    endIcon={<ChevronRightRoundedIcon />}
+                    disabled={isCtaDisabled}
+                    onClick={handleNext}
+                    className="w-full sm:w-fit md:w-[15rem]">
+                    {currentStep === steps.length ? 'confirm' : 'Next'}
+                  </Button>
+                )}
               </Box>
             </FormProvider>
           </LocalizationProvider>
