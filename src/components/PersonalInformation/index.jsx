@@ -29,10 +29,10 @@ const PersonalInformation = () => {
   })
   return (
     <Grid container spacing={3}>
-      <Grid item size={{xs: 12, md: 6}}>
-        <ControlledTextField {...getTextFieldProps('name')} />
+      <Grid  size={{xs: 12, md: 6}}>
+        <ControlledTextField {...getTextFieldProps('name')}/>
       </Grid>
-       <Grid item size={{xs: 12, md: 6}}>
+       <Grid  size={{xs: 12, md: 6}}>
         <Controller
           name="gender"
           control={control}
@@ -48,11 +48,11 @@ const PersonalInformation = () => {
           )}
         />
       </Grid>
-      <Grid item size={{xs: 12, md: 6}}>
+      <Grid  size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('mail')} />
       </Grid>
       
-         <Grid item size={{xs: 12, md: 6}}>
+         <Grid  size={{xs: 12, md: 6}}>
         <Controller
           name="dateOfBirth"
           control={control}
@@ -73,23 +73,23 @@ const PersonalInformation = () => {
           )}
         />
       </Grid>
-      <Grid item size={{xs: 12}}>
+      <Grid  size={{xs: 12}}>
         <ControlledTextField {...getTextFieldProps('address')} />
       </Grid>
-      <Grid item size={{xs: 12, md: 6}}>
+      <Grid  size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('phone')} />
       </Grid>
-      <Grid item size={{xs: 12, md: 6}}>
+      <Grid  size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('nationalId')} />
       </Grid>
-      <Grid item size={{xs: 12, md: 4}}>
+      <Grid  size={{xs: 12, md: 4}}>
         <ControlledTextField
           {...getTextFieldProps('city')}
           type="select"
           options={city}
         />
       </Grid>
-      <Grid item size={{xs: 12, md: 4}}>
+      <Grid  size={{xs: 12, md: 4}}>
         <ControlledTextField
           {...getTextFieldProps('state')}
           type="select"

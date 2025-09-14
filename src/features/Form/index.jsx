@@ -22,12 +22,12 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+import ProgressBar from '../../components/ProgressBar'
 // import PaymentForm from '../../components/PaymentForm'
 // import Review from '../../components/Review'
 import dayjs from 'dayjs'
 
 const Form = () => {
-  const steps = [' Account Details', 'Personal Info', 'Review and Submit']
   const [validationSchema, setValidationSchema] = useState(
     personalInformationSchema
   )
@@ -55,7 +55,7 @@ const Form = () => {
 
       currentFinancialSituation: '',
       employmentCircumstances: '',
-      reasonforApplying: '',
+      reasonForApplying: '',
     },
   })
   useEffect(() => {
@@ -107,7 +107,11 @@ const Form = () => {
   }
   const [isCtaDisabled, setIsCtaDisabled] = useState(false)
   console.log(' Errors:', methods.formState.errors)
-
+const steps = [
+  'Personal Information',
+  'Family and Financial Information',
+  'Family Situation Details',
+]
   useEffect(() => {
     const {isDirty, isValid} = methods.formState
     const doErrorsExist =
@@ -120,52 +124,41 @@ const Form = () => {
     setIsCtaDisabled(!isValidForm)
   }, [methods.formState, activeStep])
   return (
-    <Paper elevation={3}>
-      <Box className="py-4">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <FormProvider {...methods}>
-            {getStepContent(activeStep)}
-            <Box
-              sx={[
-                {
-                  display: 'flex',
-                  flexDirection: {xs: 'column-reverse', sm: 'row'},
-                  alignItems: 'end',
-                  flexGrow: 1,
-                  gap: 1,
-                  pb: {xs: 12, sm: 0},
-                  mt: {xs: 2, sm: 0},
-                  mb: '60px',
-                },
-                activeStep !== 0
-                  ? {justifyContent: 'space-between'}
-                  : {justifyContent: 'flex-end'},
-              ]}>
-              {activeStep !== 0 && (
+    <main>
+      <Paper
+        elevation={3}
+        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col h-[720px] mx-auto w-[940px] pt-4 px-[15px] pb-[15px]">
+            <ProgressBar steps={steps}/>
+  
+        <Box className="p-4 lg:p-8">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <FormProvider {...methods}>
+              {getStepContent(activeStep)}
+              <Box
+                className={`flex flex-col-reverse sm:flex-row items-end grow gap-4 pb-48 sm:pb-0 mt-8 mb-8 ${activeStep !== 0 ? 'justify-between' : 'justify-end'}`}>
+                {activeStep !== 0 && (
+                  <Button
+                    className="w-full sm:w-fit md:w-[15rem]"
+                    startIcon={<ChevronLeftRoundedIcon />}
+                    onClick={handleBack}
+                    variant="outlined">
+                    Go Back
+                  </Button>
+                )}
                 <Button
-                  startIcon={<ChevronLeftRoundedIcon />}
-                  onClick={handleBack}
-                  variant="outlined"
-                  // sx={{display: {xs: 'none', sm: 'flex'}}}
-                sx={{width: {xs: '100%', sm: 'fit-content'}}}
-
-                  >
-                  Previous
+                  variant="contained"
+                  endIcon={<ChevronRightRoundedIcon />}
+                  // disabled={isCtaDisabled}
+                  onClick={handleNext}
+                  className="w-full sm:w-fit md:w-[15rem]">
+                  {activeStep === steps.length - 1 ? 'confirm' : 'Next'}
                 </Button>
-              )}
-              <Button
-                variant="contained"
-                endIcon={<ChevronRightRoundedIcon />}
-                // disabled={isCtaDisabled}
-                onClick={handleNext}
-                sx={{width: {xs: '100%', sm: 'fit-content'}}}>
-                {activeStep === steps.length - 1 ? 'confirm' : 'Next'}
-              </Button>
-            </Box>
-          </FormProvider>
-        </LocalizationProvider>
-      </Box>
-    </Paper>
+              </Box>
+            </FormProvider>
+          </LocalizationProvider>
+        </Box>
+      </Paper>
+    </main>
   )
 }
 
