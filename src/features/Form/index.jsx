@@ -10,9 +10,9 @@ import SituationDetails from '../../components/SituationDetails'
 import {useForm, FormProvider} from 'react-hook-form'
 import {
   Box,
-  Stepper,
+  Stack,
   Step,
-  StepLabel,
+  Switch,
   Button,
   Typography,
   Paper,
@@ -26,6 +26,7 @@ import ProgressBar from '../../components/ProgressBar'
 import {useSelector, useDispatch} from 'react-redux'
 import {next, goBack} from '../../store/formSlice'
 import dayjs from 'dayjs'
+import {LanguageSwitch} from '../../components/LanguageSwitch'
 
 const Form = () => {
   const [validationSchema, setValidationSchema] = useState(
@@ -125,11 +126,12 @@ const Form = () => {
   // }, [validationSchema])
   return (
     <main>
+      <LanguageSwitch />
+
       <Paper
         elevation={3}
         className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col md:h-[780px] mx-auto md:w-[940px] pt-4 px-[15px] pb-[15px]">
         <ProgressBar steps={steps} />
-
         <Box className="p-4 lg:p-8">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <FormProvider {...methods}>

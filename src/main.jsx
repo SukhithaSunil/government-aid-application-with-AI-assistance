@@ -1,20 +1,20 @@
-import {StrictMode} from 'react'
-import {createRoot} from 'react-dom/client'
-import './index.css'
+import createCache from '@emotion/cache'
+import { CacheProvider } from '@emotion/react'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { Provider } from 'react-redux'
 import App from './App.jsx'
-import {ThemeProvider, createTheme} from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import {store} from './store/index.js'
-import {Provider} from 'react-redux'
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
+import './index.css'
+import { store } from './store/index.js'
 
 const cache = createCache({
   key: 'css',
   prepend: true,
-});
+})
 
 const theme = createTheme({
+  direction: 'ltr',
   palette: {
     mode: 'light',
     primary: {
@@ -55,14 +55,10 @@ const theme = createTheme({
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <CacheProvider value={cache}>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {/* <Container> */}
-        <Provider store={store}>
-          <App />
-        </Provider>
-      {/* </Container> */}
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+         <Provider store={store}><App /></Provider>
+        
+      </ThemeProvider>
     </CacheProvider>
   </StrictMode>
 )

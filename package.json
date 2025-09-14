@@ -25,6 +25,7 @@
     "react-hook-form": "^7.62.0",
     "react-i18next": "^15.7.3",
     "react-redux": "^9.2.0",
+    "stylis-plugin-rtl": "^2.1.1",
     "yup": "^1.7.0"
   },
   "devDependencies": {

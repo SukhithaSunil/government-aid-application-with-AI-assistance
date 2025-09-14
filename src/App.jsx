@@ -1,16 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import CssBaseline from '@mui/material/CssBaseline'
+import { useSelector } from 'react-redux'
 import './App.css'
+import { RTLProvider } from './config/RTL.jsx'
 import Form from './features/Form'
+import { DIRECTION, LANGUAGE_TO_DIRECTION } from './util/constants.js'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const {currentLanguage} = useSelector((state) => state.language)
 
-  return (
+  return LANGUAGE_TO_DIRECTION[currentLanguage] === DIRECTION.RTL ? (
+    <RTLProvider>
+      <CssBaseline />
+      <Form />
+    </RTLProvider>
+  ) : (
     <>
-    <Form />
-  
+      {' '}
+      <CssBaseline />
+      <Form />
     </>
   )
 }

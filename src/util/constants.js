@@ -45,3 +45,18 @@ export const employmentStatus = [
   {value: 'self_employed', label: 'Self-Employed'},
   {value: 'unemployed', label: 'Unemployed'},
 ]
+
+export const LANGUAGES = {
+  EN: 'en',
+  AR: 'ar',
+};
+
+export const DIRECTION = {
+  LTR: 'ltr',
+  RTL: 'rtl',
+};
+
+export const LANGUAGE_TO_DIRECTION = {
+  [LANGUAGES.EN]: DIRECTION.LTR,
+  [LANGUAGES.AR]: DIRECTION.RTL,
+};
