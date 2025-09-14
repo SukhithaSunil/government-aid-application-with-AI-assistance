@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 const ProgressBar = ({steps}) => {
   const currentStep = useSelector(state => state.form.currentStep)
-  console.log({currentStep})
   return (
     <Box className="p-4 md:pt-6">
       <Stepper activeStep={currentStep-1} alternativeLabel>

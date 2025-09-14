@@ -15,24 +15,27 @@ import ControlledTextField from '../Form/ControlledTextField'
 import dayjs from 'dayjs'
 import {DatePicker} from '@mui/x-date-pickers'
 import {city, states, country} from '../../util/constants'
+import {useTranslation} from 'react-i18next'
+import {getCommonProps} from '../../util/index'
+
 const PersonalInformation = () => {
   const {
     control,
     formState: {errors},
   } = useFormContext()
+  const {t} = useTranslation()
+
   const getTextFieldProps = (name) => ({
-    name,
-    label: `${name}`,
-    ariaLabel: name,
+    ...getCommonProps(name, `${t(name)}`),
     control,
     error: errors[name],
   })
   return (
     <Grid container spacing={3}>
-      <Grid  size={{xs: 12, md: 6}}>
-        <ControlledTextField {...getTextFieldProps('name')}/>
+      <Grid size={{xs: 12, md: 6}}>
+        <ControlledTextField {...getTextFieldProps('name')} />
       </Grid>
-       <Grid  size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}}>
         <Controller
           name="gender"
           control={control}
@@ -48,18 +51,18 @@ const PersonalInformation = () => {
           )}
         />
       </Grid>
-      <Grid  size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('mail')} />
       </Grid>
-      
-         <Grid  size={{xs: 12, md: 6}}>
+
+      <Grid size={{xs: 12, md: 6}}>
         <Controller
           name="dateOfBirth"
           control={control}
           render={({field}) => (
             <DatePicker
-              label="Date of Birth"
-              value={field.value || null}
+              label={t('dateOfBirth')}
+              value={field.value || null }
               disableFuture
               onChange={field.onChange}
               renderInput={(params) => (
@@ -73,23 +76,23 @@ const PersonalInformation = () => {
           )}
         />
       </Grid>
-      <Grid  size={{xs: 12}}>
+      <Grid size={{xs: 12}}>
         <ControlledTextField {...getTextFieldProps('address')} />
       </Grid>
-      <Grid  size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('phone')} />
       </Grid>
-      <Grid  size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('nationalId')} />
       </Grid>
-      <Grid  size={{xs: 12, md: 4}}>
+      <Grid size={{xs: 12, md: 4}}>
         <ControlledTextField
           {...getTextFieldProps('city')}
           type="select"
           options={city}
         />
       </Grid>
-      <Grid  size={{xs: 12, md: 4}}>
+      <Grid size={{xs: 12, md: 4}}>
         <ControlledTextField
           {...getTextFieldProps('state')}
           type="select"
@@ -103,8 +106,6 @@ const PersonalInformation = () => {
           options={country}
         />
       </Grid>
-     
-   
     </Grid>
   )
 }

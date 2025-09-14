@@ -61,7 +61,6 @@ const formSlice = createSlice({
       })
       .addCase(createUserProfile.fulfilled, (state, action) => {
         state.status = 'succeeded'
-        console.log(action.payload[0])
         Object.assign(state.formState, action.payload[0])
         state.currentStep += 1
         saveState(state)

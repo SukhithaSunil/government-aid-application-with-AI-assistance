@@ -18,3 +18,8 @@ export const readState = () => {
     return undefined
   }
 }
+export const getCommonProps = (name, label) => ({
+  name,
+  label,
+  ariaLabel: name,
+})

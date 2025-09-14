@@ -1,13 +1,15 @@
-import { Box, Typography } from '@mui/material'
+import {Box, Typography} from '@mui/material'
+import {useTranslation} from 'react-i18next'
 
 const Confirmation = () => {
+  const {t} = useTranslation()
   return (
-       <Box>
+    <Box>
       <Typography variant="h5" gutterBottom className="text-center mb-4 mt-8">
-        Application submitted
+        {t('applicationSubmitted')}
       </Typography>
       <Typography variant="subtitle1">
-        Your application number is #2001539. We have emailed your confirmation. If you ever need support, please feel free to email us at support@aid.com.
+        {t('applicationNumberMessage')}
       </Typography>
     </Box>
   )

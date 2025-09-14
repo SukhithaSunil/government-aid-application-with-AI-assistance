@@ -19,15 +19,17 @@ import {
   employmentStatus,
   housingStatus,
 } from '../../util/constants'
+import {useTranslation} from 'react-i18next'
+import {getCommonProps} from '../../util/index'
+
 const FamilyandFinancialInfo = () => {
   const {
     control,
     formState: {errors},
   } = useFormContext()
+  const {t} = useTranslation()
   const getTextFieldProps = (name) => ({
-    name,
-    label: `${name}`,
-    ariaLabel: name,
+    ...getCommonProps(name, `${t(name)}`),
     control,
     error: errors[name],
   })
@@ -41,7 +43,6 @@ const FamilyandFinancialInfo = () => {
           options={maritalStatus}
         />
       </Grid>
-   
       <Grid item size={{xs: 12, md: 6}} sx={{m: 1, minWidth: 150}}>
         <ControlledTextField
           {...getTextFieldProps('employmentStatus')}
@@ -56,7 +57,7 @@ const FamilyandFinancialInfo = () => {
           options={housingStatus}
         />
       </Grid>
-         <Grid itemsize={{xs: 12, md: 6}}>
+      <Grid itemsize={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('dependents')} />
       </Grid>
       <Grid item size={{xs: 12, md: 6}}>

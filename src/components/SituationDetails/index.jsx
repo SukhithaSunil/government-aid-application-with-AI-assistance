@@ -5,17 +5,19 @@ import {useFormContext} from 'react-hook-form'
 import {Suggestions} from '../Assistant/suggestions'
 import ControlledTextField from '../Form/ControlledTextField'
 import {useAISuggestion} from '../../hook/useAISuggestion'
+import {useTranslation} from 'react-i18next'
+import {getCommonProps} from '../../util/index'
 
 const SituationDetails = () => {
+
   const {
     control,
     formState: {errors},
     resetField,
   } = useFormContext()
+   const {t} = useTranslation()
   const getTextFieldProps = (name) => ({
-    name,
-    label: `${name}`,
-    ariaLabel: name,
+    ...getCommonProps(name, `${t(name)}`),
     control,
     error: errors[name],
   })
@@ -66,14 +68,14 @@ const SituationDetails = () => {
             onClick={() => handleSuggestion(item)}
             disabled={loading}
             startIcon={<AutoAwesomeIcon />}>
-            {loading ? 'Generating...' : 'Help Me Write'}
+            {loading ? t('labels.generating') :t('labels.helpme')}
           </Button>
         </Grid>
       ))}
       <Suggestions
         togglePopup={togglePopup}
         open={open}
-        title={'Suggestion'}
+        title={t('labels.suggestion')}
         description={suggestion}
         onAccept={onAccept}
       />

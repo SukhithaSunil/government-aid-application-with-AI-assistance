@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react'
+import {useState, useCallback} from 'react'
 import axiosInstance from '../util/axiosInstance'
+import {useTranslation} from 'react-i18next'
 
 export const useAISuggestion = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [suggestion, setSuggestion] = useState('')
+  const {t} = useTranslation()
 
   const fetchSuggestion = useCallback(async (fieldName) => {
     setLoading(true)
@@ -30,7 +32,7 @@ export const useAISuggestion = () => {
       setSuggestion(content)
       return content
     } catch (err) {
-      setError('Failed to fetch suggestion.')
+      setError(t('failedToFetchSuggestion') || err)
       // setSuggestion('Would you like the popup to support rich editing (e.g., a textarea inside the modal instead of a prompt()), or is this good for now?')
       return null
     } finally {

@@ -28,8 +28,10 @@ import {useSelector, useDispatch} from 'react-redux'
 import {next, goBack, createUserProfile} from '../../store/formSlice'
 import dayjs from 'dayjs'
 import {LanguageSwitch} from '../../components/LanguageSwitch'
+import {useTranslation} from 'react-i18next'
 
 const Form = () => {
+  const {t} = useTranslation()
   const [validationSchema, setValidationSchema] = useState(
     personalInformationSchema
   )
@@ -57,6 +59,11 @@ const Form = () => {
         : dayjs(),
     })
   }, [formState])
+    const steps = [
+    t('personalInfo'),
+    t('familyInfo'),
+    t('situation'),
+  ]
   useEffect(() => {
     switch (currentStep) {
       case 1:
@@ -112,11 +119,6 @@ const Form = () => {
     dispatch(next(formValues))
   }
   const [isCtaDisabled, setIsCtaDisabled] = useState(false)
-  const steps = [
-    'Personal Information',
-    'Family and Financial Information',
-    'Family Situation Details',
-  ]
   useEffect(() => {
     setIsCtaDisabled(!isValidForm)
   }, [isValidForm])
