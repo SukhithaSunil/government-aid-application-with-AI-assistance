@@ -96,7 +96,7 @@ const PersonalInformation = () => {
           options={states}
         />
       </Grid>
-      <Grid item size={{xs: 12, md: 4}}>
+      <Grid size={{xs: 12, md: 4}}>
         <ControlledTextField
           {...getTextFieldProps('country')}
           type="select"

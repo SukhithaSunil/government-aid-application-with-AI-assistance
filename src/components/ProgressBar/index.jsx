@@ -2,11 +2,14 @@ import Box from '@mui/material/Box'
 import Stepper from '@mui/material/Stepper'
 import Step from '@mui/material/Step'
 import StepLabel from '@mui/material/StepLabel'
+import { useSelector } from 'react-redux';
 
 const ProgressBar = ({steps}) => {
+  const currentStep = useSelector(state => state.form.currentStep)
+  console.log({currentStep})
   return (
     <Box>
-      <Stepper activeStep={1} alternativeLabel>
+      <Stepper activeStep={currentStep-1} alternativeLabel>
         {steps.map((label) => (
           <Step key={label}>
             <StepLabel>{label}</StepLabel>
