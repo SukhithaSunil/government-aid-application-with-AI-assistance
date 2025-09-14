@@ -127,7 +127,7 @@ const Form = () => {
     <main>
       <Paper
         elevation={3}
-        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col h-[720px] mx-auto w-[940px] pt-4 px-[15px] pb-[15px]">
+        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col md:h-[780px] mx-auto md:w-[940px] pt-4 px-[15px] pb-[15px]">
         <ProgressBar steps={steps} />
 
         <Box className="p-4 lg:p-8">
@@ -135,7 +135,7 @@ const Form = () => {
             <FormProvider {...methods}>
               {getStepContent()}
               <Box
-                className={`flex flex-col-reverse sm:flex-row items-end grow gap-4 pb-48 sm:pb-0 mt-8 mb-8 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
+                className={`flex flex-col-reverse sm:flex-row items-end grow gap-4 md:pb-48 sm:pb-0 mt-8 mb-8 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
                 {currentStep !== 1 && (
                   <Button
                     className="w-full sm:w-fit md:w-[15rem]"
