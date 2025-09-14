@@ -30,7 +30,7 @@ export const LanguageSwitch = () => {
     document.documentElement.setAttribute('dir', LANGUAGE_TO_DIRECTION[lang])
   }
   return (
-    <Stack direction="row" spacing={1} sx={{alignItems: 'center'}}>
+    <Stack direction="row" spacing={1} className="flex items-center mb-4">
       <Typography>{t('arabic')}</Typography>
       <Switch
         checked={selectedLanguage == LANGUAGES.AR}

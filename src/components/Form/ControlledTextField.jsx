@@ -1,5 +1,4 @@
-import React from 'react'
-import {TextField, MenuItem} from '@mui/material'
+import {TextField, MenuItem, Box} from '@mui/material'
 import {Controller} from 'react-hook-form'
 
 const ControlledTextField = ({
@@ -19,7 +18,7 @@ const ControlledTextField = ({
       control={control}
       render={({field}) => {
         return (
-          <div dir="rtl">
+          <Box>
             <TextField
               fullWidth
               select={type === 'select'}
@@ -47,7 +46,7 @@ const ControlledTextField = ({
               className={`text-sm h-5 mt-1 ${error ? 'text-red-500' : 'invisible'}`}>
               {error?.message}
             </p>
-          </div>
+          </Box>
         )
       }}
     />

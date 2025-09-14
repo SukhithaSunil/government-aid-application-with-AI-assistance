@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {
   Box,
   Button,
@@ -26,7 +26,6 @@ export const Suggestions = ({
   open,
   title,
   description,
-  onEdit,
   onAccept,
 }) => {
   const [isEditing, setIsEditing] = useState(false)

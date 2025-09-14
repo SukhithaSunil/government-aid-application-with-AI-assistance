@@ -1,4 +1,3 @@
-// RTLProvider.jsx
 import {CacheProvider} from '@emotion/react'
 import {useSelector} from 'react-redux'
 import {LANGUAGE_TO_DIRECTION} from '../util/constants'
@@ -17,8 +16,10 @@ export const RTLProvider = ({children}) => {
     key: 'mui',
     prepend: true,
   })
-  const lang = useSelector((state) => state.language.lang)
-  const direction = LANGUAGE_TO_DIRECTION[lang]
+
+  const {currentLanguage} = useSelector((state) => state.language)
+  const direction = LANGUAGE_TO_DIRECTION[currentLanguage]
+  console.log({currentLanguage})
   const selectedCache = direction === 'rtl' ? cacheRtl : cacheLtr
 
   if (typeof document !== 'undefined') {
