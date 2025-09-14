@@ -121,7 +121,7 @@ const Form = () => {
   }, [methods.formState, activeStep])
   return (
     <Paper elevation={3}>
-      <Box className="py-1">
+      <Box className="py-4">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <FormProvider {...methods}>
             {getStepContent(activeStep)}

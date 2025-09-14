@@ -6,6 +6,13 @@ import {ThemeProvider, createTheme} from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import {store} from './store/index.js'
 import {Provider} from 'react-redux'
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+
+const cache = createCache({
+  key: 'css',
+  prepend: true,
+});
 
 const theme = createTheme({
   palette: {
@@ -47,6 +54,7 @@ const theme = createTheme({
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <CacheProvider value={cache}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {/* <Container> */}
@@ -55,5 +63,6 @@ createRoot(document.getElementById('root')).render(
         </Provider>
       {/* </Container> */}
     </ThemeProvider>
+    </CacheProvider>
   </StrictMode>
 )
