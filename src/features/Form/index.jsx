@@ -31,7 +31,9 @@ const Form = () => {
   const [validationSchema, setValidationSchema] = useState(
     personalInformationSchema
   )
-  const {currentStep, completedStep, formState} = useSelector((state) => state.form)
+  const {currentStep, completedStep, formState} = useSelector(
+    (state) => state.form
+  )
   const dispatch = useDispatch()
   const methods = useForm({
     mode: 'onChange',
@@ -39,9 +41,20 @@ const Form = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: {
       ...formState,
-      dateOfBirth: formState.dateOfBirth ? dayjs(formState.dateOfBirth) : dayjs(),
+      dateOfBirth: formState.dateOfBirth
+        ? dayjs(formState.dateOfBirth)
+        : dayjs(),
     },
   })
+  useEffect(() => {
+    console.log('mount')
+    methods.reset({
+      ...formState,
+      dateOfBirth: formState.dateOfBirth
+        ? dayjs(formState.dateOfBirth)
+        : dayjs(),
+    })
+  }, [formState])
   useEffect(() => {
     switch (currentStep) {
       case 1:
@@ -73,18 +86,18 @@ const Form = () => {
   const handleBack = async () => {
     dispatch(goBack())
   }
-console.log({validationSchema})
+  console.log({validationSchema})
 
-  const { isDirty, isValid, errors } = methods.formState
+  const {isDirty, isValid, errors} = methods.formState
   const doErrorsExist = Object.keys(errors).length > 0
   const isValidForm = isDirty && !doErrorsExist && isValid
   console.log(' Errors:', methods.formState.errors)
-      console.log({isValid})
-        console.log({isDirty})
-    console.log({isValidForm})
-const triggerForm = async () => {
+  console.log({isValid})
+  console.log({isDirty})
+  console.log({isValidForm})
+  const triggerForm = async () => {
     await methods.trigger()
-}
+  }
   const handleNext = async () => {
     // const isStepValid = await methods.trigger()
     const formValues = methods.getValues()
