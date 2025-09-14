@@ -1,20 +1,15 @@
-import createCache from '@emotion/cache'
-import { CacheProvider } from '@emotion/react'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import App from './App.jsx'
+import { RTLProvider } from './config/RTL.jsx'
 import './index.css'
 import { store } from './store/index.js'
-
-const cache = createCache({
-  key: 'css',
-  prepend: true,
-})
+import { DIRECTION } from './util/constants.js'
 
 const theme = createTheme({
-  direction: 'ltr',
+  direction: DIRECTION.LTR,
   palette: {
     mode: 'light',
     primary: {
@@ -51,14 +46,14 @@ const theme = createTheme({
     },
   },
 })
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CacheProvider value={cache}>
-      <ThemeProvider theme={theme}>
-         <Provider store={store}><App /></Provider>
-        
-      </ThemeProvider>
-    </CacheProvider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <RTLProvider>
+          <App />
+        </RTLProvider>
+      </Provider>
+    </ThemeProvider>
   </StrictMode>
 )

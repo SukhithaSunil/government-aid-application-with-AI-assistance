@@ -19,7 +19,7 @@ const ControlledTextField = ({
       control={control}
       render={({field}) => {
         return (
-          <>
+          <div dir="rtl">
             <TextField
               fullWidth
               select={type === 'select'}
@@ -47,7 +47,7 @@ const ControlledTextField = ({
               className={`text-sm h-5 mt-1 ${error ? 'text-red-500' : 'invisible'}`}>
               {error?.message}
             </p>
-          </>
+          </div>
         )
       }}
     />
