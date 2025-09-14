@@ -1,6 +1,6 @@
 import Snackbar from '@mui/material/Snackbar'
 
-export const Toast = ({message,open,handleClose}) => {
+export const Toast = ({message, open, handleClose}) => {
   return (
     <div>
       <Snackbar
@@ -8,6 +8,7 @@ export const Toast = ({message,open,handleClose}) => {
         autoHideDuration={3000}
         onClose={handleClose}
         message={message}
+        data-testid={'alert'}
       />
     </div>
   )
