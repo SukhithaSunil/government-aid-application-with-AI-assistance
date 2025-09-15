@@ -1,21 +1,38 @@
-/* eslint-env jest */
 
-import {render, screen} from '@testing-library/react'
-import {GlobalErrorToast} from '../index'
 import '@testing-library/jest-dom'
-import {fireEvent} from '@testing-library/react'
-test('renders snackbar', () => {
-  const mockHandleClose = jest.fn()
-  const component = render(
-    <GlobalErrorToast
-      
-    />
-  )
-//   expect(component).toMatchSnapshot()
-  const alert = screen.getByTestId('alert')
-  expect(alert).toBeInTheDocument()
-  const text = screen.getByText('error')
-  expect(text).toBeInTheDocument()
-//   fireEvent.click(alert)
-//   expect(mockHandleClose).toHaveBeenCalledTimes(1)
+import { render, screen } from '../../../util//test-utils'
+import GlobalErrorToast from '../index'
+
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key) => key,
+  }),
+}))
+
+describe('GlobalErrorToast', () => {
+  it('does not render when no errors exist', () => {
+    render(<GlobalErrorToast />, {
+      preloadedState: {
+        form: { error: null },
+        generateSuggestion: { error: null },
+      },
+    })
+
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('renders and clears suggestion error', async () => {
+    render(<GlobalErrorToast />, {
+      preloadedState: {
+        form: { error: null },
+        generateSuggestion: { error: 'Something went wrong with AI' },
+      },
+    })
+
+    const alert = await screen.findAllByRole('alert')
+    expect(alert[0]).toBeInTheDocument()
+    expect(alert[0]).toHaveTextContent('failedToFetchSuggestion')
+  })
+
+
 })

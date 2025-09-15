@@ -4,7 +4,7 @@ const axiosInstance = axios.create({
   baseURL: 'https://api.openai.com/v1',
   timeout: 10000,
 })
-const apiKey = import.meta.env.VITE_OPENAI_API_KEY
+const apiKey = process.env.APP_OPEN_API_KEY
 
 axiosInstance.interceptors.request.use(
   (config) => {
