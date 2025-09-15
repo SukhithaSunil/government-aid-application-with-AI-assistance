@@ -1,6 +1,6 @@
 
 
-# Government social support portal. Multi-step form wizard using React 
+# Multi-step form wizard using React 
 
 Tech Stack 
 
