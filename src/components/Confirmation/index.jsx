@@ -11,6 +11,15 @@ const Confirmation = () => {
       <Typography variant="subtitle1">
         {t('applicationNumberMessage')}
       </Typography>
+      <Box className="flex items-center justify-center">
+        <img
+          height={'300px'}
+          width={'300px'}
+          src="public/success-tick.jpg"
+          alt=""
+          aria-hidden="true"
+        />
+      </Box>
     </Box>
   )
 }

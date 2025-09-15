@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {
   Box,
   Button,
@@ -8,6 +8,7 @@ import {
   TextField,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import {useTranslation} from 'react-i18next'
 
 const style = {
   position: 'absolute',
@@ -29,8 +30,14 @@ export const Suggestions = ({
   onAccept,
 }) => {
   const [isEditing, setIsEditing] = useState(false)
-  const [editedText, setEditedText] = useState('')
-  console.log(description)
+  const [editedText, setEditedText] = useState(description)
+  const {t} = useTranslation()
+
+  useEffect(() => {
+    setEditedText(description)
+    setIsEditing(false)
+  }, [description])
+
   const setEditingMode = () => setIsEditing(true)
   const onClose = () => {
     setIsEditing(false)
@@ -46,10 +53,9 @@ export const Suggestions = ({
       aria-labelledby="suggestions-modal-title"
       aria-describedby="suggestions-modal-description">
       <Box sx={{...style, position: 'relative'}}>
-        {/* Close Button */}
         <IconButton
           aria-label="close"
-          onClick={handleAccept}
+          onClick={onClose}
           sx={{
             position: 'absolute',
             top: 8,
@@ -69,7 +75,7 @@ export const Suggestions = ({
           <TextField
             sx={{mt: 4}}
             id="suggestions-modal-description"
-            value={description}
+            value={editedText}
             fullWidth
             multiline
             minRows={5}
@@ -82,13 +88,13 @@ export const Suggestions = ({
             variant="outlined"
             onClick={setEditingMode}
             sx={{width: '85px'}}>
-            Edit
+            {t('labels.edit')}
           </Button>
           <Button
             variant="contained"
             onClick={handleAccept}
             sx={{width: '85px'}}>
-            Accept
+            {t('labels.accept')}
           </Button>
         </Box>
       </Box>

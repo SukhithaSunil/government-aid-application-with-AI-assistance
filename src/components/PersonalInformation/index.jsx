@@ -1,22 +1,16 @@
-import React, {useState} from 'react'
 import {
-  Box,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
   FormControlLabel,
-  RadioGroup,
-  Radio,
   Grid,
+  Radio,
+  RadioGroup,
+  Typography,
 } from '@mui/material'
-import {useFormContext, Controller} from 'react-hook-form'
-import ControlledTextField from '../Form/ControlledTextField'
-import dayjs from 'dayjs'
 import {DatePicker} from '@mui/x-date-pickers'
-import {city, states, country} from '../../util/constants'
+import {Controller, useFormContext} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
+import {city, country, states} from '../../util/constants'
 import {getCommonProps} from '../../util/index'
+import ControlledTextField from '../Form/ControlledTextField'
 
 const PersonalInformation = () => {
   const {
@@ -32,6 +26,11 @@ const PersonalInformation = () => {
   })
   return (
     <Grid container spacing={3}>
+      <Grid size={{xs: 12}}>
+        <Typography variant="h5" gutterBottom className="text-center mb-2">
+          {t('title1')}
+        </Typography>
+      </Grid>
       <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('name')} />
       </Grid>
@@ -41,11 +40,15 @@ const PersonalInformation = () => {
           control={control}
           render={({field}) => (
             <RadioGroup {...field} row>
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="male"
+                control={<Radio />}
+                label={t('male')}
+              />
               <FormControlLabel
                 value="female"
                 control={<Radio />}
-                label="Female"
+                label={t('female')}
               />
             </RadioGroup>
           )}
@@ -62,7 +65,7 @@ const PersonalInformation = () => {
           render={({field}) => (
             <DatePicker
               label={t('dateOfBirth')}
-              value={field.value || null }
+              value={field.value || null}
               disableFuture
               onChange={field.onChange}
               renderInput={(params) => (

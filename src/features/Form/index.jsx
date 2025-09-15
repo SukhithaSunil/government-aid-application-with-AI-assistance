@@ -1,85 +1,58 @@
-import React, {useState, useEffect} from 'react'
-import PersonalInformation from '../../components/PersonalInformation'
+import {yupResolver} from '@hookform/resolvers/yup'
 import {
-  personalInformationSchema,
-  familyandFinancialSchema,
-  SituationDetailsSchema,
-} from '../../util/validationSchemas'
-import FamilyandFinancialInfo from '../../components/FamilyandFinancialInfo '
-import SituationDetails from '../../components/SituationDetails'
-import Confirmation from '../../components/Confirmation'
-import {useForm, FormProvider} from 'react-hook-form'
-import {
+  Backdrop,
   Box,
-  Stack,
-  Step,
-  Switch,
-  Button,
-  Typography,
+  CircularProgress,
+  CssBaseline,
   Paper,
 } from '@mui/material'
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
-import ProgressBar from '../../components/ProgressBar'
-import {useSelector, useDispatch} from 'react-redux'
-import {next, goBack, createUserProfile} from '../../store/formSlice'
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
-import {LanguageSwitch} from '../../components/LanguageSwitch'
+import React, {useEffect, useState} from 'react'
+import {FormProvider, useForm} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
+import {
+  Confirmation,
+  FamilyandFinancialInfo,
+  GlobalErrorToast,
+  LanguageSwitch,
+  PersonalInformation,
+  ProgressBar,
+  SituationDetails,
+} from '../../components'
+import {createUserProfile, next} from '../../store/formSlice'
+import {filterOutCompleatedFields} from '../../util/index'
+import ActionButtons from './ActionButtons'
+import {useValidationSchema} from '../../hook/useValidationSchema'
 
 const Form = () => {
   const {t} = useTranslation()
-  const [validationSchema, setValidationSchema] = useState(
-    personalInformationSchema
-  )
-  const {currentStep, completedStep, formState} = useSelector(
+  const dispatch = useDispatch()
+  const {currentStep, completedStep, formState, loading} = useSelector(
     (state) => state.form
   )
-  const dispatch = useDispatch()
+  const [hasVisitedPreviousStep, setHasVisitedPreviousStep] = useState(false)
+  const validationSchema = useValidationSchema(currentStep)
+
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
     resolver: yupResolver(validationSchema),
     defaultValues: {
       ...formState,
-      dateOfBirth: formState.dateOfBirth
+      dateOfBirth: formState?.dateOfBirth
         ? dayjs(formState.dateOfBirth)
         : dayjs(),
     },
   })
-  useEffect(() => {
-    console.log('mount')
-    methods.reset({
-      ...formState,
-      dateOfBirth: formState.dateOfBirth
-        ? dayjs(formState.dateOfBirth)
-        : dayjs(),
-    })
-  }, [formState])
-    const steps = [
-    t('personalInfo'),
-    t('familyInfo'),
-    t('situation'),
-  ]
-  useEffect(() => {
-    switch (currentStep) {
-      case 1:
-        setValidationSchema(personalInformationSchema)
-        break
-      case 2:
-        setValidationSchema(familyandFinancialSchema)
-        break
-      case 3:
-        setValidationSchema(SituationDetailsSchema)
-        break
-      default:
-        setValidationSchema(personalInformationSchema)
-    }
-  }, [currentStep])
-  function getStepContent() {
+  const steps = React.useMemo(
+    () => [t('personalInfo'), t('familyInfo'), t('situation')],
+    [t]
+  )
+
+  const stepContent = React.useMemo(() => {
     switch (currentStep) {
       case 1:
         return <PersonalInformation />
@@ -90,80 +63,73 @@ const Form = () => {
       default:
         return <Confirmation />
     }
-  }
-
-  const handleBack = async () => {
-    dispatch(goBack())
-  }
-  console.log({validationSchema})
+  }, [currentStep])
 
   const {isDirty, isValid, errors} = methods.formState
   const doErrorsExist = Object.keys(errors).length > 0
-  const isValidForm = isDirty && !doErrorsExist && isValid
-  console.log(' Errors:', methods.formState.errors)
-  console.log({isValid})
-  console.log({isDirty})
-  console.log({isValidForm})
-  const triggerForm = async () => {
-    await methods.trigger()
+  const isStepCompleted = completedStep >= currentStep
+  const isValidForm = isValid && !doErrorsExist && (isDirty || isStepCompleted)
+
+  const triggerForm = async (data) => {
+    await methods.trigger(data)
   }
-  const handleNext = async () => {
-    // const isStepValid = await methods.trigger()
-    const formValues = methods.getValues()
-    const {dateOfBirth} = formValues
-    formValues.dateOfBirth = dateOfBirth.format('MM/DD/YYYY')
-    console.log({formValues})
-    if(currentStep === 3)
-      dispatch(createUserProfile(formState))
-    else
-    dispatch(next(formValues))
-  }
+  useEffect(() => {
+    const errorFields = Object.keys(methods.formState.errors)
+    if (errorFields) methods.clearErrors(errorFields)
+    if (isStepCompleted) triggerForm()
+    else if (currentStep === completedStep + 1 && hasVisitedPreviousStep) {
+      triggerForm()
+      setHasVisitedPreviousStep(false)
+    }
+  }, [currentStep])
+
   const [isCtaDisabled, setIsCtaDisabled] = useState(false)
   useEffect(() => {
     setIsCtaDisabled(!isValidForm)
   }, [isValidForm])
-  // useEffect(() => {
-  //   if (currentStep <= completedStep) {
-  //     triggerForm()
-  //   }
-  // }, [validationSchema])
+
+  const onSubmit = (formData) => {
+    const dateOfBirth = formData.dateOfBirth
+    const formattedData = {
+      ...formData,
+      dateOfBirth: dayjs(dateOfBirth).format('MM/DD/YYYY'),
+    }
+    if (currentStep === steps.length) {
+      dispatch(createUserProfile(formattedData))
+    } else {
+      const filteredData = filterOutCompleatedFields(currentStep, formattedData)
+      dispatch(next(filteredData))
+    }
+  }
+
   return (
     <main>
       <LanguageSwitch />
-
       <Paper
         elevation={3}
-        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col md:h-[780px] mx-auto md:w-[940px] pt-4 px-[15px] pb-[15px]">
+        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col lg:h-[780px] min-h-[780px] sm:min-h-[720px]  mx-auto lg:w-[940px] pt-4 px-[15px] pb-[15px]">
         <ProgressBar steps={steps} />
-        <Box className="p-4 lg:pt-4">
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <FormProvider {...methods}>
-              {getStepContent()}
-              <Box
-                className={`flex flex-col-reverse sm:flex-row items-end grow gap-4 md:pb-48 sm:pb-0 mt-8 mb-8 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
-                {currentStep !== 1 && currentStep !== 4 && (
-                  <Button
-                    className="w-full sm:w-fit md:w-[15rem]"
-                    startIcon={<ChevronLeftRoundedIcon />}
-                    onClick={handleBack}
-                    variant="outlined">
-                    Go Back
-                  </Button>
-                )}
-                {currentStep !== 4 && (
-                  <Button
-                    variant="contained"
-                    endIcon={<ChevronRightRoundedIcon />}
-                    disabled={isCtaDisabled}
-                    onClick={handleNext}
-                    className="w-full sm:w-fit md:w-[15rem]">
-                    {currentStep === steps.length ? 'confirm' : 'Next'}
-                  </Button>
-                )}
-              </Box>
-            </FormProvider>
-          </LocalizationProvider>
-        </Box>
+        <FormProvider {...methods}>
+          <Box className="p-4 lg:pt-6">
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              {stepContent}
+            </LocalizationProvider>
+          </Box>
+          <ActionButtons
+            isCtaDisabled={isCtaDisabled}
+            labelForNextButton={
+              currentStep === steps.length
+                ? t('labels.confirm')
+                : t('labels.next')
+            }
+            handleNext={methods.handleSubmit(onSubmit)}
+            setHasVisitedPreviousStep={setHasVisitedPreviousStep}
+          />
+        </FormProvider>
+        <Backdrop open={loading}>
+          <CircularProgress />
+        </Backdrop>
+        <GlobalErrorToast />
       </Paper>
     </main>
   )

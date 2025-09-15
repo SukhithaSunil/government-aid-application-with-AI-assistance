@@ -1,21 +1,27 @@
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import {Button, Grid, Snackbar} from '@mui/material'
+import {Button, Grid, Typography} from '@mui/material'
 import {useEffect, useState} from 'react'
 import {useFormContext} from 'react-hook-form'
+import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
+import {generateSuggestion} from '../../store/generateSuggestionSlice'
+import {getCommonProps} from '../../util/index'
 import {Suggestions} from '../Assistant/suggestions'
 import ControlledTextField from '../Form/ControlledTextField'
-import {useAISuggestion} from '../../hook/useAISuggestion'
-import {useTranslation} from 'react-i18next'
-import {getCommonProps} from '../../util/index'
 
 const SituationDetails = () => {
-
+  const {
+    data: suggestion,
+    loading,
+    error,
+  } = useSelector((state) => state.generateSuggestion)
+  const dispatch = useDispatch()
   const {
     control,
     formState: {errors},
     resetField,
   } = useFormContext()
-   const {t} = useTranslation()
+  const {t} = useTranslation()
   const getTextFieldProps = (name) => ({
     ...getCommonProps(name, `${t(name)}`),
     control,
@@ -23,22 +29,13 @@ const SituationDetails = () => {
   })
   const [open, setOpen] = useState(false)
   const togglePopup = () => setOpen((prev) => !prev)
-  const [showError, setShowError] = useState(false)
 
-  const handleClose = (_, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpen(false)
-  }
-
-  const {fetchSuggestion, suggestion, loading, error} = useAISuggestion()
   const [editedSuggestions, setEditedSuggestions] = useState({})
   const [selectedField, setSelectedField] = useState('')
 
   const handleSuggestion = async (field) => {
     setSelectedField(field)
-    fetchSuggestion(field)
+    dispatch(generateSuggestion(t(field)))
   }
 
   const onAccept = (text) => {
@@ -50,10 +47,9 @@ const SituationDetails = () => {
   }
 
   useEffect(() => {
-    if (error) setShowError(true)
-    console.log({suggestion})
     if (suggestion) togglePopup()
-  }, [error, suggestion, loading])
+  }, [error, suggestion])
+
   const queries = [
     'currentFinancialSituation',
     'employmentCircumstances',
@@ -61,15 +57,22 @@ const SituationDetails = () => {
   ]
   return (
     <Grid container>
+      <Grid size={{xs: 12}}>
+        <Typography variant="h5" gutterBottom className="text-center mb-5">
+          {t('title3')}
+        </Typography>
+      </Grid>
       {queries.map((item) => (
-        <Grid item size={{xs: 12}} sx={{m: 1, minWidth: 100}}>
-          <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
+        <Grid item size={{xs: 12}} key={item}>
           <Button
+            className="mb-1.5"
             onClick={() => handleSuggestion(item)}
             disabled={loading}
+            color="secondary"
             startIcon={<AutoAwesomeIcon />}>
-            {loading ? t('labels.generating') :t('labels.helpme')}
+            {loading ? t('labels.generating') : t('labels.helpme')}
           </Button>
+          <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
         </Grid>
       ))}
       <Suggestions
@@ -78,13 +81,6 @@ const SituationDetails = () => {
         title={t('labels.suggestion')}
         description={suggestion}
         onAccept={onAccept}
-      />
-      <Snackbar
-        open={showError}
-        autoHideDuration={4000}
-        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-        onClose={handleClose}
-        message={error}
       />
     </Grid>
   )
