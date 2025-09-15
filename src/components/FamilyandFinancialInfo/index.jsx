@@ -1,26 +1,13 @@
-import React, {useState} from 'react'
+import {Grid, Typography} from '@mui/material'
+import {useFormContext} from 'react-hook-form'
+import {useTranslation} from 'react-i18next'
 import {
-  Box,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  FormControlLabel,
-  RadioGroup,
-  TextareaAutosize,
-  Grid,
-} from '@mui/material'
-import {useFormContext, Controller} from 'react-hook-form'
-import ControlledTextField from '../Form/ControlledTextField'
-import dayjs from 'dayjs'
-import {DatePicker} from '@mui/x-date-pickers'
-import {
-  maritalStatus,
   employmentStatus,
   housingStatus,
+  maritalStatus,
 } from '../../util/constants'
-import {useTranslation} from 'react-i18next'
 import {getCommonProps} from '../../util/index'
+import ControlledTextField from '../Form/ControlledTextField'
 
 const FamilyandFinancialInfo = () => {
   const {
@@ -36,31 +23,37 @@ const FamilyandFinancialInfo = () => {
 
   return (
     <Grid container spacing={3}>
-      <Grid itemsize={{xs: 12, md: 6}} sx={{m: 1, minWidth: 150}}>
+      <Grid size={{xs: 12}}>
+        <Typography variant="h5" gutterBottom className="text-center mb-2">
+          This information helps us understand your household and financial
+          background.
+        </Typography>
+      </Grid>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField
           {...getTextFieldProps('maritalStatus')}
           type="select"
           options={maritalStatus}
         />
       </Grid>
-      <Grid item size={{xs: 12, md: 6}} sx={{m: 1, minWidth: 150}}>
-        <ControlledTextField
-          {...getTextFieldProps('employmentStatus')}
-          type="select"
-          options={employmentStatus}
-        />
-      </Grid>
-      <Grid item size={{xs: 12, md: 6}} sx={{m: 1, minWidth: 150}}>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField
           {...getTextFieldProps('housingStatus')}
           type="select"
           options={housingStatus}
         />
       </Grid>
-      <Grid itemsize={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}}>
+        <ControlledTextField
+          {...getTextFieldProps('employmentStatus')}
+          type="select"
+          options={employmentStatus}
+        />
+      </Grid>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('dependents')} />
       </Grid>
-      <Grid item size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('monthlyIncome')} />
       </Grid>
     </Grid>

@@ -3,7 +3,7 @@ import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import {Box, Button, Paper, Backdrop, CircularProgress} from '@mui/material'
+import {Box, Button, Paper, Backdrop, CircularProgress, CssBaseline} from '@mui/material'
 import dayjs from 'dayjs'
 import React, {useEffect, useState} from 'react'
 import {FormProvider, useForm} from 'react-hook-form'
@@ -124,40 +124,40 @@ const Form = () => {
   // }, [validationSchema])
   return (
     <main>
+      <CssBaseline />
       <LanguageSwitch />
       <Paper
         elevation={3}
-        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col md:h-[780px] mx-auto md:w-[940px] pt-4 px-[15px] pb-[15px]">
+        className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col lg:h-[780px] min-h-[780px] sm:min-h-[720px]  mx-auto lg:w-[940px] pt-4 px-[15px] pb-[15px]">
         <ProgressBar steps={steps} />
-        <Box className="p-4 lg:pt-4">
+        <Box className="p-4 lg:pt-6">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <FormProvider {...methods}>
-              {getStepContent()}
-              <Box
-                className={`flex flex-col-reverse sm:flex-row items-end grow gap-4 md:pb-48 sm:pb-0 mt-8 mb-8 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
-                {currentStep !== 1 && currentStep !== 4 && (
-                  <Button
-                    className="w-full sm:w-fit md:w-[15rem]"
-                    startIcon={<ChevronLeftRoundedIcon />}
-                    onClick={handleBack}
-                    variant="outlined">
-                    Go Back
-                  </Button>
-                )}
-                {currentStep !== 4 && (
-                  <Button
-                    variant="contained"
-                    endIcon={<ChevronRightRoundedIcon />}
-                    disabled={isCtaDisabled}
-                    onClick={handleNext}
-                    className="w-full sm:w-fit md:w-[15rem]">
-                    {currentStep === steps.length ? t('confirm') : t('next')}
-                  </Button>
-                )}
-              </Box>
-            </FormProvider>
+            <FormProvider {...methods}>{getStepContent()}</FormProvider>
           </LocalizationProvider>
         </Box>
+        <Box
+          className={`flex flex-col-reverse px-[15px] sm:flex-row items-end grow gap-4  sm:pb-0 mb-4 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
+          {currentStep !== 1 && currentStep !== 4 && (
+            <Button
+              className="w-full sm:w-fit md:w-[15rem]"
+              startIcon={<ChevronLeftRoundedIcon />}
+              onClick={handleBack}
+              variant="outlined">
+              Go Back
+            </Button>
+          )}
+          {currentStep !== 4 && (
+            <Button
+              variant="contained"
+              endIcon={<ChevronRightRoundedIcon />}
+              disabled={isCtaDisabled}
+              onClick={handleNext}
+              className="w-full sm:w-fit md:w-[15rem]">
+              {currentStep === steps.length ? t('confirm') : t('next')}
+            </Button>
+          )}
+        </Box>
+
         <Backdrop
           sx={(theme) => ({color: '#fff', zIndex: theme.zIndex.drawer + 1})}
           open={open}>

@@ -1,5 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import {saveState, delay} from '../util/index.js'
+import {saveState, delay, removeState} from '../util/index.js'
 const API_URL = 'http://localhost:3001/users'
 import axiosInstance from '../network/axiosInstance'
 
@@ -9,7 +9,7 @@ export const createUserProfile = createAsyncThunk(
     try {
       await delay(3000) // simulate a delay
       const response = await axiosInstance.post(API_URL, [postData])
-      return response.data
+      return response
     } catch (err) {
       return rejectWithValue(err.message || 'Something went wrong. Try again')
     }
@@ -63,11 +63,10 @@ const formSlice = createSlice({
         state.loading = true
         state.error = null
       })
-      .addCase(createUserProfile.fulfilled, (state, action) => {
+      .addCase(createUserProfile.fulfilled, (state) => {
         state.loading = false
-        Object.assign(state.formState, action.payload[0])
         state.currentStep += 1
-        saveState(state)
+        removeState()
       })
       .addCase(createUserProfile.rejected, (state, action) => {
         state.loading = false

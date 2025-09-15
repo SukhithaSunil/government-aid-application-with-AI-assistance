@@ -18,6 +18,12 @@ export const readState = () => {
     return undefined
   }
 }
+
+export const removeState = () => {
+  if (localStorage.getItem('formState')) {
+    localStorage.removeItem('formState')
+  }
+}
 export const getCommonProps = (name, label) => ({
   name,
   label,

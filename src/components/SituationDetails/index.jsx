@@ -1,12 +1,12 @@
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import {Button, Grid} from '@mui/material'
-import {useEffect, useState} from 'react'
-import {useFormContext} from 'react-hook-form'
-import {useTranslation} from 'react-i18next'
-import {useDispatch, useSelector} from 'react-redux'
-import {generateSuggestion} from '../../store/generateSuggestionSlice'
-import {getCommonProps} from '../../util/index'
-import {Suggestions} from '../Assistant/suggestions'
+import { Button, Grid, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useFormContext } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
+import { generateSuggestion } from '../../store/generateSuggestionSlice'
+import { getCommonProps } from '../../util/index'
+import { Suggestions } from '../Assistant/suggestions'
 import ControlledTextField from '../Form/ControlledTextField'
 
 const SituationDetails = () => {
@@ -57,8 +57,14 @@ const SituationDetails = () => {
   ]
   return (
     <Grid container>
+      <Grid size={{xs: 12}}>
+        <Typography variant="h5" gutterBottom className="text-center mb-5">
+          Complete the following to provide insight into your family
+          responsibilities.
+        </Typography>
+      </Grid>
       {queries.map((item) => (
-        <Grid item size={{xs: 12}} sx={{m: 1, minWidth: 100}}>
+        <Grid item size={{xs: 12}}>
           <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
           <Button
             onClick={() => handleSuggestion(item)}
