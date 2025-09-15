@@ -30,6 +30,8 @@ const ControlledTextField = ({
                   'aria-label': ariaLabel,
                   role: type === 'select' ? 'combobox' : 'textbox',
                   'data-testid': name,
+                  'aria-invalid': !!error,
+                  'aria-describedby': error ? `${name}-error` : undefined,
                   ...inputProps,
                 },
               }}
@@ -43,7 +45,9 @@ const ControlledTextField = ({
                 ))}
             </TextField>
             <p
-              className={`text-sm h-5 mt-1 ${error ? 'text-red-500' : 'invisible'}`}>
+              id={`${name}-error`}
+              className={`text-sm h-5 mt-1 ${error ? 'text-red-500' : 'invisible'}`}
+              role="alert">
               {error?.message}
             </p>
           </Box>

@@ -1,45 +1,54 @@
-import {yupResolver} from '@hookform/resolvers/yup'
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import {Box, Button, Paper, Backdrop, CircularProgress, CssBaseline} from '@mui/material'
+import { yupResolver } from '@hookform/resolvers/yup'
+import {
+  Backdrop,
+  Box,
+  CircularProgress,
+  CssBaseline,
+  Paper,
+} from '@mui/material'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
-import React, {useEffect, useState} from 'react'
-import {FormProvider, useForm} from 'react-hook-form'
-import {useTranslation} from 'react-i18next'
-import {useDispatch, useSelector} from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Confirmation,
   FamilyandFinancialInfo,
+  GlobalErrorToast,
   LanguageSwitch,
   PersonalInformation,
   ProgressBar,
   SituationDetails,
-  GlobalErrorToast,
 } from '../../components'
-import {createUserProfile, goBack, next} from '../../store/formSlice'
+import { createUserProfile, next } from '../../store/formSlice'
 import {
   familyandFinancialSchema,
   personalInformationSchema,
   SituationDetailsSchema,
 } from '../../util/validationSchemas'
+import ActionButtons from './ActionButtons'
 
 const Form = () => {
   const {t} = useTranslation()
-  const [validationSchema, setValidationSchema] = useState(
-    personalInformationSchema
-  )
+  const dispatch = useDispatch()
   const {currentStep, completedStep, formState, loading} = useSelector(
     (state) => state.form
   )
-  const [open, setLoading] = React.useState(false)
+  const validationSchema = React.useMemo(() => {
+    switch (currentStep) {
+      case 1:
+        return personalInformationSchema
+      case 2:
+        return familyandFinancialSchema
+      case 3:
+        return SituationDetailsSchema
+      default:
+        return personalInformationSchema
+    }
+  }, [currentStep])
 
-  useEffect(() => {
-    setLoading(loading)
-  }, [loading])
-
-  const dispatch = useDispatch()
   const methods = useForm({
     mode: 'onChange',
     reValidateMode: 'onChange',
@@ -51,32 +60,36 @@ const Form = () => {
         : dayjs(),
     },
   })
-  useEffect(() => {
-    console.log('mount')
-    methods.reset({
-      ...formState,
-      dateOfBirth: formState.dateOfBirth
-        ? dayjs(formState.dateOfBirth)
-        : dayjs(),
-    })
-  }, [formState])
-  const steps = [t('personalInfo'), t('familyInfo'), t('situation')]
-  useEffect(() => {
-    switch (currentStep) {
-      case 1:
-        setValidationSchema(personalInformationSchema)
-        break
-      case 2:
-        setValidationSchema(familyandFinancialSchema)
-        break
-      case 3:
-        setValidationSchema(SituationDetailsSchema)
-        break
-      default:
-        setValidationSchema(personalInformationSchema)
-    }
-  }, [currentStep])
-  function getStepContent() {
+  // useEffect(() => {
+  //   console.log('mount')
+  //   methods.reset({
+  //     ...formState,
+  //     dateOfBirth: formState.dateOfBirth
+  //       ? dayjs(formState.dateOfBirth)
+  //       : dayjs(),
+  //   })
+  // }, [formState])
+  const steps = React.useMemo(
+    () => [t('personalInfo'), t('familyInfo'), t('situation')],
+    []
+  )
+
+  // useEffect(() => {
+  //   switch (currentStep) {
+  //     case 1:
+  //       setValidationSchema(personalInformationSchema)
+  //       break
+  //     case 2:
+  //       setValidationSchema(familyandFinancialSchema)
+  //       break
+  //     case 3:
+  //       setValidationSchema(SituationDetailsSchema)
+  //       break
+  //     default:
+  //       setValidationSchema(personalInformationSchema)
+  //   }
+  // }, [currentStep])
+  const stepContent = React.useMemo(() => {
     switch (currentStep) {
       case 1:
         return <PersonalInformation />
@@ -87,32 +100,25 @@ const Form = () => {
       default:
         return <Confirmation />
     }
-  }
+  }, [currentStep])
 
-  const handleBack = async () => {
-    dispatch(goBack())
-  }
   console.log({validationSchema})
 
   const {isDirty, isValid, errors} = methods.formState
   const doErrorsExist = Object.keys(errors).length > 0
-  const isValidForm = isDirty && !doErrorsExist && isValid
+  const isStepCompleted = completedStep >= currentStep
+  const isValidForm = isValid && !doErrorsExist && (isDirty || isStepCompleted)
+
   console.log(' Errors:', methods.formState.errors)
   console.log({isValid})
   console.log({isDirty})
   console.log({isValidForm})
-  const triggerForm = async () => {
-    await methods.trigger()
-  }
-  const handleNext = async () => {
-    // const isStepValid = await methods.trigger()
-    const formValues = methods.getValues()
-    const {dateOfBirth} = formValues
-    formValues.dateOfBirth = dateOfBirth.format('MM/DD/YYYY')
-    console.log({formValues})
-    if (currentStep === 3) dispatch(createUserProfile(formState))
-    else dispatch(next(formValues))
-  }
+
+useEffect(() => {
+  const errorFields = Object.keys(methods.formState.errors)
+    if (errorFields) methods.clearErrors(errorFields)
+}, [isStepCompleted])
+
   const [isCtaDisabled, setIsCtaDisabled] = useState(false)
   useEffect(() => {
     setIsCtaDisabled(!isValidForm)
@@ -122,6 +128,19 @@ const Form = () => {
   //     triggerForm()
   //   }
   // }, [validationSchema])
+  const onSubmit = (formData) => {
+    const dateOfBirth = formData.dateOfBirth
+    const formattedData = {
+      ...formData,
+      dateOfBirth: dayjs(dateOfBirth).format('MM/DD/YYYY')
+    }
+    if (currentStep === 3) {
+      dispatch(createUserProfile(formattedData))
+    } else {
+      dispatch(next(formattedData))
+    }
+  }
+
   return (
     <main>
       <CssBaseline />
@@ -132,35 +151,20 @@ const Form = () => {
         <ProgressBar steps={steps} />
         <Box className="p-4 lg:pt-6">
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <FormProvider {...methods}>{getStepContent()}</FormProvider>
+            <FormProvider {...methods}>{stepContent}</FormProvider>
           </LocalizationProvider>
         </Box>
-        <Box
-          className={`flex flex-col-reverse px-[15px] sm:flex-row items-end grow gap-4  sm:pb-0 mb-4 ${currentStep !== 1 ? 'justify-between' : 'justify-end'}`}>
-          {currentStep !== 1 && currentStep !== 4 && (
-            <Button
-              className="w-full sm:w-fit md:w-[15rem]"
-              startIcon={<ChevronLeftRoundedIcon />}
-              onClick={handleBack}
-              variant="outlined">
-              Go Back
-            </Button>
-          )}
-          {currentStep !== 4 && (
-            <Button
-              variant="contained"
-              endIcon={<ChevronRightRoundedIcon />}
-              disabled={isCtaDisabled}
-              onClick={handleNext}
-              className="w-full sm:w-fit md:w-[15rem]">
-              {currentStep === steps.length ? t('confirm') : t('next')}
-            </Button>
-          )}
-        </Box>
-
+        <ActionButtons
+          isCtaDisabled={isCtaDisabled}
+          labelForNextButton={
+            currentStep === steps.length ? t('confirm') : t('next')
+          }
+          formData={methods.getValues()}
+          handleNext={methods.handleSubmit(onSubmit)}
+        />
         <Backdrop
           sx={(theme) => ({color: '#fff', zIndex: theme.zIndex.drawer + 1})}
-          open={open}>
+          open={loading}>
           <CircularProgress color="inherit" />
         </Backdrop>
         <GlobalErrorToast />

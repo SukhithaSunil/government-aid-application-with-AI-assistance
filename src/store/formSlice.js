@@ -46,7 +46,7 @@ const formSlice = createSlice({
   reducers: {
     next(state, action) {
       Object.assign(state.formState, action.payload)
-      state.completedStep = state.currentStep
+      state.completedStep = Math.max(state.completedStep, state.currentStep)
       state.currentStep += 1
       saveState(state)
     },

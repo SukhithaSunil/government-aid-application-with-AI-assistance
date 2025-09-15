@@ -16,7 +16,8 @@ const Confirmation = () => {
           height={'300px'}
           width={'300px'}
           src="public/success-tick.jpg"
-          alt="User Avatar"
+          alt=""
+          aria-hidden="true"
         />
       </Box>
     </Box>

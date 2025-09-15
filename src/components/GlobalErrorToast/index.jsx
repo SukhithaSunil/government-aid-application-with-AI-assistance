@@ -48,7 +48,6 @@ const GlobalErrorToast = () => {
     </React.Fragment>
   )
   return (
-    <div>
       <Snackbar
         open={open}
         autoHideDuration={3000}
@@ -57,8 +56,9 @@ const GlobalErrorToast = () => {
         data-testid={'alert'}
         action={action}
         anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+        role="alert"
+        aria-live="assertive"
       />
-    </div>
   )
 }
 
