@@ -36,6 +36,13 @@ const MuiTheme = () => {
         primary: '#37474f',
       },
     },
+    typography: {
+      h5: {
+        '@media (max-width:600px)': {
+          fontSize: '1.25rem',
+        },
+      },
+    },
   })
   return newTheme
 }

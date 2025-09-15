@@ -104,7 +104,6 @@ const Form = () => {
 
   return (
     <main>
-      <CssBaseline />
       <LanguageSwitch />
       <Paper
         elevation={3}
@@ -123,15 +122,12 @@ const Form = () => {
                 ? t('labels.confirm')
                 : t('labels.next')
             }
-            formData={methods.getValues()}
             handleNext={methods.handleSubmit(onSubmit)}
             setHasVisitedPreviousStep={setHasVisitedPreviousStep}
           />
         </FormProvider>
-        <Backdrop
-          sx={(theme) => ({color: '#fff', zIndex: theme.zIndex.drawer + 1})}
-          open={loading}>
-          <CircularProgress color="inherit" />
+        <Backdrop open={loading}>
+          <CircularProgress />
         </Backdrop>
         <GlobalErrorToast />
       </Paper>

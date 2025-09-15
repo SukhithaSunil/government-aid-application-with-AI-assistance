@@ -63,7 +63,7 @@ const SituationDetails = () => {
         </Typography>
       </Grid>
       {queries.map((item) => (
-        <Grid item size={{xs: 12}}>
+        <Grid item size={{xs: 12}} key={item}>
           <Button
             className="mb-1.5"
             onClick={() => handleSuggestion(item)}
