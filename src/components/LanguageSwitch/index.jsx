@@ -14,8 +14,7 @@ import {LANGUAGES, LANGUAGE_TO_DIRECTION} from '../../util/constants'
 import {useSelector, useDispatch} from 'react-redux'
 import {toggleLanguage} from '../../store/languageSlice'
 
-export const LanguageSwitch = () => {
-
+const LanguageSwitch = () => {
   const {currentLanguage} = useSelector((state) => state.language)
   const [selectedLanguage, setSelectedLanguage] = useState(currentLanguage)
   const {t, i18n} = useTranslation()
@@ -41,3 +40,5 @@ export const LanguageSwitch = () => {
     </Stack>
   )
 }
+
+export default LanguageSwitch

@@ -1,14 +1,14 @@
 /* eslint-env jest */
 
 import {render, screen} from '@testing-library/react'
-import {Toast} from '../index'
+import {GlobalErrorToast} from '../index'
 import '@testing-library/jest-dom'
 import {fireEvent} from '@testing-library/react'
 test('renders snackbar', () => {
   const mockHandleClose = jest.fn()
   const component = render(
-    <Toast
-      {...{message: 'error', open: true, handleClose: {mockHandleClose}}}
+    <GlobalErrorToast
+      
     />
   )
 //   expect(component).toMatchSnapshot()

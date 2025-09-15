@@ -1,0 +1,9 @@
+// components/index.js
+
+export {default as Confirmation} from './Confirmation'
+export {default as FamilyandFinancialInfo} from './FamilyandFinancialInfo'
+export {default as LanguageSwitch} from './LanguageSwitch'
+export {default as PersonalInformation} from './PersonalInformation'
+export {default as ProgressBar} from './ProgressBar'
+export {default as SituationDetails} from './SituationDetails'
+export {default as GlobalErrorToast} from './GlobalErrorToast'

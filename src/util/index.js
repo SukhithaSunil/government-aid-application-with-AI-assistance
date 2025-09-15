@@ -23,3 +23,5 @@ export const getCommonProps = (name, label) => ({
   label,
   ariaLabel: name,
 })
+
+export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))

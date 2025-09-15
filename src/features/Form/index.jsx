@@ -1,43 +1,44 @@
-import React, {useState, useEffect} from 'react'
-import PersonalInformation from '../../components/PersonalInformation'
-import {
-  personalInformationSchema,
-  familyandFinancialSchema,
-  SituationDetailsSchema,
-} from '../../util/validationSchemas'
-import FamilyandFinancialInfo from '../../components/FamilyandFinancialInfo '
-import SituationDetails from '../../components/SituationDetails'
-import Confirmation from '../../components/Confirmation'
-import {useForm, FormProvider} from 'react-hook-form'
-import {
-  Box,
-  Stack,
-  Step,
-  Switch,
-  Button,
-  Typography,
-  Paper,
-} from '@mui/material'
+import {yupResolver} from '@hookform/resolvers/yup'
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import {yupResolver} from '@hookform/resolvers/yup'
-import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
-import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
-import ProgressBar from '../../components/ProgressBar'
-import {useSelector, useDispatch} from 'react-redux'
-import {next, goBack, createUserProfile} from '../../store/formSlice'
+import {Box, Button, Paper, Backdrop, CircularProgress} from '@mui/material'
 import dayjs from 'dayjs'
-import {LanguageSwitch} from '../../components/LanguageSwitch'
+import React, {useEffect, useState} from 'react'
+import {FormProvider, useForm} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
+import {
+  Confirmation,
+  FamilyandFinancialInfo,
+  LanguageSwitch,
+  PersonalInformation,
+  ProgressBar,
+  SituationDetails,
+  GlobalErrorToast,
+} from '../../components'
+import {createUserProfile, goBack, next} from '../../store/formSlice'
+import {
+  familyandFinancialSchema,
+  personalInformationSchema,
+  SituationDetailsSchema,
+} from '../../util/validationSchemas'
 
 const Form = () => {
   const {t} = useTranslation()
   const [validationSchema, setValidationSchema] = useState(
     personalInformationSchema
   )
-  const {currentStep, completedStep, formState} = useSelector(
+  const {currentStep, completedStep, formState, loading} = useSelector(
     (state) => state.form
   )
+  const [open, setLoading] = React.useState(false)
+
+  useEffect(() => {
+    setLoading(loading)
+  }, [loading])
+
   const dispatch = useDispatch()
   const methods = useForm({
     mode: 'onChange',
@@ -59,11 +60,7 @@ const Form = () => {
         : dayjs(),
     })
   }, [formState])
-    const steps = [
-    t('personalInfo'),
-    t('familyInfo'),
-    t('situation'),
-  ]
+  const steps = [t('personalInfo'), t('familyInfo'), t('situation')]
   useEffect(() => {
     switch (currentStep) {
       case 1:
@@ -113,10 +110,8 @@ const Form = () => {
     const {dateOfBirth} = formValues
     formValues.dateOfBirth = dateOfBirth.format('MM/DD/YYYY')
     console.log({formValues})
-    if(currentStep === 3)
-      dispatch(createUserProfile(formState))
-    else
-    dispatch(next(formValues))
+    if (currentStep === 3) dispatch(createUserProfile(formState))
+    else dispatch(next(formValues))
   }
   const [isCtaDisabled, setIsCtaDisabled] = useState(false)
   useEffect(() => {
@@ -130,7 +125,6 @@ const Form = () => {
   return (
     <main>
       <LanguageSwitch />
-
       <Paper
         elevation={3}
         className="bg-white rounded-2xl shadow-[0_5px_10px_#d6d9e6] flex flex-col md:h-[780px] mx-auto md:w-[940px] pt-4 px-[15px] pb-[15px]">
@@ -157,13 +151,19 @@ const Form = () => {
                     disabled={isCtaDisabled}
                     onClick={handleNext}
                     className="w-full sm:w-fit md:w-[15rem]">
-                    {currentStep === steps.length ? 'confirm' : 'Next'}
+                    {currentStep === steps.length ? t('confirm') : t('next')}
                   </Button>
                 )}
               </Box>
             </FormProvider>
           </LocalizationProvider>
         </Box>
+        <Backdrop
+          sx={(theme) => ({color: '#fff', zIndex: theme.zIndex.drawer + 1})}
+          open={open}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <GlobalErrorToast />
       </Paper>
     </main>
   )

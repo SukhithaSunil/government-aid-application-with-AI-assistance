@@ -1,21 +1,27 @@
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import {Button, Grid, Snackbar} from '@mui/material'
+import {Button, Grid} from '@mui/material'
 import {useEffect, useState} from 'react'
 import {useFormContext} from 'react-hook-form'
+import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
+import {generateSuggestion} from '../../store/generateSuggestionSlice'
+import {getCommonProps} from '../../util/index'
 import {Suggestions} from '../Assistant/suggestions'
 import ControlledTextField from '../Form/ControlledTextField'
-import {useAISuggestion} from '../../hook/useAISuggestion'
-import {useTranslation} from 'react-i18next'
-import {getCommonProps} from '../../util/index'
 
 const SituationDetails = () => {
-
+  const {
+    data: suggestion,
+    loading,
+    error,
+  } = useSelector((state) => state.generateSuggestion)
+  const dispatch = useDispatch()
   const {
     control,
     formState: {errors},
     resetField,
   } = useFormContext()
-   const {t} = useTranslation()
+  const {t} = useTranslation()
   const getTextFieldProps = (name) => ({
     ...getCommonProps(name, `${t(name)}`),
     control,
@@ -23,22 +29,13 @@ const SituationDetails = () => {
   })
   const [open, setOpen] = useState(false)
   const togglePopup = () => setOpen((prev) => !prev)
-  const [showError, setShowError] = useState(false)
 
-  const handleClose = (_, reason) => {
-    if (reason === 'clickaway') {
-      return
-    }
-    setOpen(false)
-  }
-
-  const {fetchSuggestion, suggestion, loading, error} = useAISuggestion()
   const [editedSuggestions, setEditedSuggestions] = useState({})
   const [selectedField, setSelectedField] = useState('')
 
   const handleSuggestion = async (field) => {
     setSelectedField(field)
-    fetchSuggestion(field)
+    dispatch(generateSuggestion(field))
   }
 
   const onAccept = (text) => {
@@ -50,10 +47,9 @@ const SituationDetails = () => {
   }
 
   useEffect(() => {
-    if (error) setShowError(true)
-    console.log({suggestion})
     if (suggestion) togglePopup()
-  }, [error, suggestion, loading])
+  }, [error, suggestion])
+
   const queries = [
     'currentFinancialSituation',
     'employmentCircumstances',
@@ -68,7 +64,7 @@ const SituationDetails = () => {
             onClick={() => handleSuggestion(item)}
             disabled={loading}
             startIcon={<AutoAwesomeIcon />}>
-            {loading ? t('labels.generating') :t('labels.helpme')}
+            {loading ? t('labels.generating') : t('labels.helpme')}
           </Button>
         </Grid>
       ))}
@@ -78,13 +74,6 @@ const SituationDetails = () => {
         title={t('labels.suggestion')}
         description={suggestion}
         onAccept={onAccept}
-      />
-      <Snackbar
-        open={showError}
-        autoHideDuration={4000}
-        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-        onClose={handleClose}
-        message={error}
       />
     </Grid>
   )
