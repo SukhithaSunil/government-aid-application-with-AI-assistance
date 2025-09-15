@@ -33,12 +33,41 @@ The portal which will allow user to enter personal, family & financial informati
 
 ## Getting Started and Installing
 1. First Git clone the repo into your computer
-   git clone https://github.com/SukhithaSunil/form-theme-switcher
-2. Open your terminal
-3. $ cd form-theme-switcher
-4. $ npm install
- This should install all the dependencies. 
-6. Once done run   
-7. $ NPM RUN DEV    to start the server.
+   git clone https://github.com/SukhithaSunil/community-aid-finance-portal
+2. Open your terminal on folder community-aid-finance-portal
+3. $ npm install
+ This should install all the dependencies.
+4. ✅ Steps to Get an OpenAI API Key
+
+Go to OpenAI’s website
+🔗 https://platform.openai.com/signup
+
+If you already have an account, log in here:
+🔗 https://platform.openai.com/login
+
+Sign in or sign up
+You can use:
+
+Google or Microsoft accounts
+
+Or just a regular email and password
+
+Go to the API Keys page
+Once logged in, go to:
+🔗 https://platform.openai.com/api-keys
+
+Click "Create new secret key"
+
+Give it a name (optional)
+
+Copy the key that gets generated
+
+⚠️ Important: You will only see the full key once — copy it and store it securely.
+
+Use the key in  app
+In  project,  store it in an .env file with name VITE_APP_OPEN_API_KEY
+5. Once done run   
+6. npm run dev to start the server.
     open (http://localhost:3000) in your browser.
     This should open up the Demo App
+7. npm run start:json-server to open JSON Server started on PORT :3001
