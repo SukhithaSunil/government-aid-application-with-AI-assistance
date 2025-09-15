@@ -1,12 +1,12 @@
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import { Button, Grid, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
-import { useFormContext } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { generateSuggestion } from '../../store/generateSuggestionSlice'
-import { getCommonProps } from '../../util/index'
-import { Suggestions } from '../Assistant/suggestions'
+import {Button, Grid, Typography} from '@mui/material'
+import {useEffect, useState} from 'react'
+import {useFormContext} from 'react-hook-form'
+import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
+import {generateSuggestion} from '../../store/generateSuggestionSlice'
+import {getCommonProps} from '../../util/index'
+import {Suggestions} from '../Assistant/suggestions'
 import ControlledTextField from '../Form/ControlledTextField'
 
 const SituationDetails = () => {
@@ -35,7 +35,7 @@ const SituationDetails = () => {
 
   const handleSuggestion = async (field) => {
     setSelectedField(field)
-    dispatch(generateSuggestion(field))
+    dispatch(generateSuggestion(t(field)))
   }
 
   const onAccept = (text) => {
@@ -65,13 +65,15 @@ const SituationDetails = () => {
       </Grid>
       {queries.map((item) => (
         <Grid item size={{xs: 12}}>
-          <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
           <Button
+            className="mb-1.5"
             onClick={() => handleSuggestion(item)}
             disabled={loading}
+            color="secondary"
             startIcon={<AutoAwesomeIcon />}>
             {loading ? t('labels.generating') : t('labels.helpme')}
           </Button>
+          <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
         </Grid>
       ))}
       <Suggestions

@@ -25,7 +25,7 @@ const MuiTheme = () => {
         main: '#424242',
       },
       secondary: {
-        main: '#ffdede',
+        main: '#00897b',
         contrastText: 'blue',
       },
       error: {

@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {
   Box,
   Button,
@@ -29,7 +29,13 @@ export const Suggestions = ({
   onAccept,
 }) => {
   const [isEditing, setIsEditing] = useState(false)
-  const [editedText, setEditedText] = useState('')
+  const [editedText, setEditedText] = useState(description)
+
+  useEffect(() => {
+    setEditedText(description)
+    setIsEditing(false)
+  }, [description])
+
   console.log(description)
   const setEditingMode = () => setIsEditing(true)
   const onClose = () => {
@@ -49,7 +55,7 @@ export const Suggestions = ({
         {/* Close Button */}
         <IconButton
           aria-label="close"
-          onClick={handleAccept}
+          onClick={onClose}
           sx={{
             position: 'absolute',
             top: 8,
@@ -69,7 +75,7 @@ export const Suggestions = ({
           <TextField
             sx={{mt: 4}}
             id="suggestions-modal-description"
-            value={description}
+            value={editedText}
             fullWidth
             multiline
             minRows={5}

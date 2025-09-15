@@ -15,10 +15,10 @@ export const generateSuggestion = createAsyncThunk(
           },
           {
             role: 'user',
-            content: `Help me write the ${fieldName}" field. I am unemployed with no income. Help me describe my financial hardship.'}`,
+            content: `I am filling out a government financial assistance form and need help writing about my financial hardship. Can you write a professional statement for the ${fieldName} section in minimum 30 words and maximum 50 words?`,
           },
         ],
-      })
+      }, { needsAuth: true })
       return response.data.choices[0].message.content
     } catch (error) {
       return rejectWithValue(error.customMessage)

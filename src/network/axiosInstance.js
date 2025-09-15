@@ -8,7 +8,9 @@ const apiKey = import.meta.env.VITE_OPENAI_API_KEY
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    config.headers['Authorization'] = `Bearer ${apiKey}`
+    if (config.needsAuth) {
+      config.headers['Authorization'] = `Bearer ${apiKey}`;
+    }
     config.headers['Content-Type'] = 'application/json'
     return config
   },
@@ -16,9 +18,9 @@ axiosInstance.interceptors.request.use(
 )
 
 axiosInstance.interceptors.response.use(
-  (response) => {
+  (response) => 
     response
-  },
+  ,
   (error) => {
     if (error.code === 'ECONNABORTED') {
       error.customMessage = 'Request timed out. Please try again.'

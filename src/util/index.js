@@ -31,3 +31,44 @@ export const getCommonProps = (name, label) => ({
 })
 
 export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+export const filterOutCompleatedFields = (currenttStep, formData) => {
+  let fields = []
+  switch (currenttStep) {
+    case 1:
+      fields = [
+        'name',
+        'nationalId',
+        'dateOfBirth',
+        'phone',
+        'address',
+        'city',
+        'state',
+        'country',
+        'gender',
+        'mail',
+      ]
+      break
+    case 2:
+      fields = [
+        'maritalStatus',
+        'dependents',
+        'employmentStatus',
+        'monthlyIncome',
+        'housingStatus',
+      ]
+      break
+    case 3:
+      fields = [
+        'currentFinancialSituation',
+        'employmentCircumstances',
+        'reasonForApplying',
+      ]
+      break
+  }
+  const currentStepData = fields.reduce((obj, key) => {
+    obj[key] = formData[key]
+    return obj
+  }, {})
+  return currentStepData
+}
