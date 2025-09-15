@@ -5,7 +5,7 @@ import {BrowserRouter, Routes, Route, Navigate} from 'react-router-dom'
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/" element={<Navigate to="/social-portal" />} />
         <Route path="/social-portal" element={<Form />} />
