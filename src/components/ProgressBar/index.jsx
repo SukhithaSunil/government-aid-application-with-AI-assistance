@@ -14,8 +14,7 @@ const ProgressBar = ({steps}) => {
           const isActive = currentStep - 1 === index
           return (
             <Step key={label}>
-              <StepLabel
-                aria-current={isActive ? 'step' : undefined}>
+              <StepLabel aria-current={isActive ? 'step' : undefined}>
                 {label}
               </StepLabel>
             </Step>

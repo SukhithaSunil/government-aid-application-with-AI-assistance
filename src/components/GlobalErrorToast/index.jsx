@@ -48,17 +48,17 @@ const GlobalErrorToast = () => {
     </React.Fragment>
   )
   return (
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-        message={message}
-        data-testid={'alert'}
-        action={action}
-        anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
-        role="alert"
-        aria-live="assertive"
-      />
+    <Snackbar
+      open={open}
+      autoHideDuration={3000}
+      onClose={handleClose}
+      message={message}
+      data-testid={'alert'}
+      action={action}
+      anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}
+      role="alert"
+      aria-live="assertive"
+    />
   )
 }
 

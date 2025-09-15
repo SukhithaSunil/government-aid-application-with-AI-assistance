@@ -1,18 +1,14 @@
 import {
-  Box,
   Stack,
-  Step,
   Switch,
-  Button,
-  Typography,
-  Paper,
+  Typography
 } from '@mui/material'
-import {useState} from 'react'
-import {useTranslation} from 'react-i18next'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { useDispatch, useSelector } from 'react-redux'
 import '../../config/i18n'
-import {LANGUAGES, LANGUAGE_TO_DIRECTION} from '../../util/constants'
-import {useSelector, useDispatch} from 'react-redux'
-import {toggleLanguage} from '../../store/languageSlice'
+import { toggleLanguage } from '../../store/languageSlice'
+import { LANGUAGES, LANGUAGE_TO_DIRECTION } from '../../util/constants'
 
 const LanguageSwitch = () => {
   const {currentLanguage} = useSelector((state) => state.language)

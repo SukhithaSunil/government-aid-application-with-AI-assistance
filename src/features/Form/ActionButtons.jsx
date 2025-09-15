@@ -7,14 +7,14 @@ import {useDispatch, useSelector} from 'react-redux'
 import {goBack} from '../../store/formSlice'
 
 const ActionButtons = React.memo(
-  ({isCtaDisabled, labelForNextButton, handleNext, setHasVisitedPreStep}) => {
+  ({isCtaDisabled, labelForNextButton, handleNext, setHasVisitedPreviousStep}) => {
     const dispatch = useDispatch()
     const {t} = useTranslation()
     const {currentStep, completedStep} = useSelector((state) => state.form)
 
     const handleBack = useCallback(() => {
       if (currentStep - 1 === completedStep) {
-        setHasVisitedPreStep(true)
+        setHasVisitedPreviousStep(true)
       }
       dispatch(goBack())
     }, [currentStep, completedStep])
@@ -30,7 +30,7 @@ const ActionButtons = React.memo(
             startIcon={<ChevronLeftRoundedIcon />}
             onClick={handleBack}
             variant="outlined">
-            {t('goBack')}
+            {t('labels.goBack')}
           </Button>
         )}
         {currentStep !== 4 && (
@@ -39,7 +39,6 @@ const ActionButtons = React.memo(
             endIcon={<ChevronRightRoundedIcon />}
             disabled={isCtaDisabled}
             onClick={handleNext}
-            //  aria-label={`Proceed to ${activeStep < steps.length - 1 ? steps[activeStep + 1] : labelForNextButton}`}
             aria-label={labelForNextButton}
             className="w-full sm:w-fit md:w-[15rem]">
             {labelForNextButton}

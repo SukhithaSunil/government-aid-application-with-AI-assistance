@@ -19,12 +19,15 @@ export const RTLProvider = ({children}) => {
 
   const {currentLanguage} = useSelector((state) => state.language)
   const direction = LANGUAGE_TO_DIRECTION[currentLanguage]
-  console.log({currentLanguage})
   const selectedCache = direction === 'rtl' ? cacheRtl : cacheLtr
 
   if (typeof document !== 'undefined') {
     document.body.setAttribute('dir', direction)
   }
 
-  return <CacheProvider value={selectedCache}><div dir={direction}>{children}</div></CacheProvider>
+  return (
+    <CacheProvider value={selectedCache}>
+      <div dir={direction}>{children}</div>
+    </CacheProvider>
+  )
 }

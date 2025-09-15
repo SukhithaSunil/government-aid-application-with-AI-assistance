@@ -28,7 +28,7 @@ const PersonalInformation = () => {
     <Grid container spacing={3}>
       <Grid size={{xs: 12}}>
         <Typography variant="h5" gutterBottom className="text-center mb-2">
-          Please provide accurate personal details to complete your profile.
+          {t('title1')}
         </Typography>
       </Grid>
       <Grid size={{xs: 12, md: 6}}>
@@ -40,11 +40,15 @@ const PersonalInformation = () => {
           control={control}
           render={({field}) => (
             <RadioGroup {...field} row>
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="male"
+                control={<Radio />}
+                label={t('male')}
+              />
               <FormControlLabel
                 value="female"
                 control={<Radio />}
-                label="Female"
+                label={t('female')}
               />
             </RadioGroup>
           )}

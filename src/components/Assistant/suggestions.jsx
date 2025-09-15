@@ -8,6 +8,7 @@ import {
   TextField,
 } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close'
+import {useTranslation} from 'react-i18next'
 
 const style = {
   position: 'absolute',
@@ -30,13 +31,13 @@ export const Suggestions = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [editedText, setEditedText] = useState(description)
+  const {t} = useTranslation()
 
   useEffect(() => {
     setEditedText(description)
     setIsEditing(false)
   }, [description])
 
-  console.log(description)
   const setEditingMode = () => setIsEditing(true)
   const onClose = () => {
     setIsEditing(false)
@@ -52,7 +53,6 @@ export const Suggestions = ({
       aria-labelledby="suggestions-modal-title"
       aria-describedby="suggestions-modal-description">
       <Box sx={{...style, position: 'relative'}}>
-        {/* Close Button */}
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -88,13 +88,13 @@ export const Suggestions = ({
             variant="outlined"
             onClick={setEditingMode}
             sx={{width: '85px'}}>
-            Edit
+            {t('labels.edit')}
           </Button>
           <Button
             variant="contained"
             onClick={handleAccept}
             sx={{width: '85px'}}>
-            Accept
+            {t('labels.accept')}
           </Button>
         </Box>
       </Box>

@@ -25,8 +25,7 @@ const FamilyandFinancialInfo = () => {
     <Grid container spacing={3}>
       <Grid size={{xs: 12}}>
         <Typography variant="h5" gutterBottom className="text-center mb-2">
-          This information helps us understand your household and financial
-          background.
+          {t('title2')}
         </Typography>
       </Grid>
       <Grid size={{xs: 12, md: 6}}>

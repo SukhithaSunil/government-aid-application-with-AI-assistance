@@ -1,4 +1,4 @@
-import { yupResolver } from '@hookform/resolvers/yup'
+import {yupResolver} from '@hookform/resolvers/yup'
 import {
   Backdrop,
   Box,
@@ -6,13 +6,13 @@ import {
   CssBaseline,
   Paper,
 } from '@mui/material'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
 import dayjs from 'dayjs'
-import React, { useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
+import React, {useEffect, useState} from 'react'
+import {FormProvider, useForm} from 'react-hook-form'
+import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
 import {
   Confirmation,
   FamilyandFinancialInfo,
@@ -22,34 +22,19 @@ import {
   ProgressBar,
   SituationDetails,
 } from '../../components'
-import { createUserProfile, next } from '../../store/formSlice'
-import { filterOutCompleatedFields } from '../../util/index'
-import {
-  familyandFinancialSchema,
-  personalInformationSchema,
-  SituationDetailsSchema,
-} from '../../util/validationSchemas'
+import {createUserProfile, next} from '../../store/formSlice'
+import {filterOutCompleatedFields} from '../../util/index'
 import ActionButtons from './ActionButtons'
+import {useValidationSchema} from '../../hook/useValidationSchema'
+
 const Form = () => {
   const {t} = useTranslation()
   const dispatch = useDispatch()
   const {currentStep, completedStep, formState, loading} = useSelector(
     (state) => state.form
   )
-  console.log(formState)
-  const [hasVisitedLaterStep, setHasVisitedLaterStep] = useState(false)
-  const validationSchema = React.useMemo(() => {
-    switch (currentStep) {
-      case 1:
-        return personalInformationSchema
-      case 2:
-        return familyandFinancialSchema
-      case 3:
-        return SituationDetailsSchema
-      default:
-        return personalInformationSchema
-    }
-  }, [currentStep])
+  const [hasVisitedPreviousStep, setHasVisitedPreviousStep] = useState(false)
+  const validationSchema = useValidationSchema(currentStep)
 
   const methods = useForm({
     mode: 'onChange',
@@ -64,7 +49,7 @@ const Form = () => {
   })
   const steps = React.useMemo(
     () => [t('personalInfo'), t('familyInfo'), t('situation')],
-    []
+    [t]
   )
 
   const stepContent = React.useMemo(() => {
@@ -80,14 +65,11 @@ const Form = () => {
     }
   }, [currentStep])
 
-  console.log({validationSchema})
-
   const {isDirty, isValid, errors} = methods.formState
   const doErrorsExist = Object.keys(errors).length > 0
   const isStepCompleted = completedStep >= currentStep
   const isValidForm = isValid && !doErrorsExist && (isDirty || isStepCompleted)
 
-  console.log(' Errors:', methods.formState.errors)
   const triggerForm = async (data) => {
     await methods.trigger(data)
   }
@@ -95,9 +77,9 @@ const Form = () => {
     const errorFields = Object.keys(methods.formState.errors)
     if (errorFields) methods.clearErrors(errorFields)
     if (isStepCompleted) triggerForm()
-    if (currentStep === completedStep + 1 && hasVisitedLaterStep) {
+    else if (currentStep === completedStep + 1 && hasVisitedPreviousStep) {
       triggerForm()
-      setHasVisitedLaterStep(false)
+      setHasVisitedPreviousStep(false)
     }
   }, [currentStep])
 
@@ -112,7 +94,7 @@ const Form = () => {
       ...formData,
       dateOfBirth: dayjs(dateOfBirth).format('MM/DD/YYYY'),
     }
-    if (currentStep === 3) {
+    if (currentStep === steps.length) {
       dispatch(createUserProfile(formattedData))
     } else {
       const filteredData = filterOutCompleatedFields(currentStep, formattedData)
@@ -137,11 +119,13 @@ const Form = () => {
           <ActionButtons
             isCtaDisabled={isCtaDisabled}
             labelForNextButton={
-              currentStep === steps.length ? t('confirm') : t('next')
+              currentStep === steps.length
+                ? t('labels.confirm')
+                : t('labels.next')
             }
             formData={methods.getValues()}
             handleNext={methods.handleSubmit(onSubmit)}
-            setHasVisitedPreStep={setHasVisitedLaterStep}
+            setHasVisitedPreviousStep={setHasVisitedPreviousStep}
           />
         </FormProvider>
         <Backdrop

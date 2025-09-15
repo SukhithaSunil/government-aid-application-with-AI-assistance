@@ -59,8 +59,7 @@ const SituationDetails = () => {
     <Grid container>
       <Grid size={{xs: 12}}>
         <Typography variant="h5" gutterBottom className="text-center mb-5">
-          Complete the following to provide insight into your family
-          responsibilities.
+          {t('title3')}
         </Typography>
       </Grid>
       {queries.map((item) => (
