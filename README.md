@@ -35,7 +35,7 @@ The portal which will allow user to enter personal, family & financial informati
 1. First Git clone the repo into your computer
    git clone https://github.com/SukhithaSunil/community-aid-finance-portal
 2. Open your terminal on folder community-aid-finance-portal
-3. $ npm install
+3. npm install
  This should install all the dependencies.
 4. ✅ Steps to Get an OpenAI API Key
     
