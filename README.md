@@ -37,7 +37,7 @@ The portal which will allow user to enter personal, family & financial informati
 2. Open your terminal on folder community-aid-finance-portal
 3. npm install
  This should install all the dependencies.
-4. ✅ Steps to Get an OpenAI API Key
+4. Steps to Get an OpenAI API Key
     
     Go to OpenAI’s website
     🔗 https://platform.openai.com/signup
