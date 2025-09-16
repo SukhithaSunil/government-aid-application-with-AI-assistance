@@ -51,10 +51,12 @@ export const Suggestions = ({
       open={open}
       onClose={onClose}
       aria-labelledby="suggestions-modal-title"
-      aria-describedby="suggestions-modal-description">
-      <Box sx={{...style, position: 'relative'}}>
+      aria-describedby="suggestions-modal-description"
+      role="dialog"
+      aria-modal="true">
+      <Box sx={{...style, position: 'relative'}} role="document" tabIndex={-1}>
         <IconButton
-          aria-label="close"
+          aria-label="Close"
           onClick={onClose}
           sx={{
             position: 'absolute',
@@ -64,9 +66,11 @@ export const Suggestions = ({
           }}>
           <CloseIcon />
         </IconButton>
+
         <Typography id="suggestions-modal-title" variant="h5" component="h2">
           {title}
         </Typography>
+
         {!isEditing ? (
           <Typography id="suggestions-modal-description" sx={{mt: 2}}>
             {description}
@@ -82,18 +86,19 @@ export const Suggestions = ({
             onChange={(e) => setEditedText(e.target.value)}
           />
         )}
-
         <Box sx={{display: 'flex', justifyContent: 'flex-end', gap: 1, mt: 4}}>
           <Button
             variant="outlined"
             onClick={setEditingMode}
-            sx={{width: '85px'}}>
+            sx={{width: '85px'}}
+            aria-label="Edit suggestion">
             {t('labels.edit')}
           </Button>
           <Button
             variant="contained"
             onClick={handleAccept}
-            sx={{width: '85px'}}>
+            sx={{width: '85px'}}
+            aria-label="Accept suggestion">
             {t('labels.accept')}
           </Button>
         </Box>

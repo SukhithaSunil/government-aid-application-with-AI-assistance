@@ -69,7 +69,9 @@ const SituationDetails = () => {
             onClick={() => handleSuggestion(item)}
             disabled={loading}
             color="secondary"
-            startIcon={<AutoAwesomeIcon />}>
+            startIcon={<AutoAwesomeIcon />}
+            aria-busy={loading ? 'true' : 'false'}
+            aria-live="polite">
             {loading ? t('labels.generating') : t('labels.helpme')}
           </Button>
           <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
