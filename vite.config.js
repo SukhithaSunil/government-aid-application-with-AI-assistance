@@ -21,6 +21,5 @@ export default defineConfig(({mode}) => {
     server: {
       port: 3000,
     },
-    base: '/community-aid-finance-portal/',
   }
 })
