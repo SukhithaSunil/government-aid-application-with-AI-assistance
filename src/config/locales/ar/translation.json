@@ -28,6 +28,8 @@
     "name": "الاسم مطلوب",
     "mail": "البريد الإلكتروني مطلوب",
     "invalidMail": "البريد الإلكتروني غير صالح",
+    "name_invalid": "يرجى إدخال اسم صحيح.",
+    "inValidMonthlyIncome": "يرجى إدخال دخل شهري صحيح",
     "nationalId": "رقم الهوية مطلوب",
     "dateOfBirth": "تاريخ الميلاد مطلوب",
     "address": "العنوان مطلوب",
@@ -44,7 +46,8 @@
     "housingStatus": "حالة السكن مطلوبة",
     "currentFinancialSituation": "الوضع المالي الحالي مطلوب",
     "employmentCircumstances": "الظروف الوظيفية مطلوبة",
-    "reasonForApplying": "سبب التقديم مطلوب"
+    "reasonForApplying": "سبب التقديم مطلوب",
+    "maxMonthlyIncome": "الحد الأقصى للدخل المسموح به هو 5000"
   },
   "labels": {
     "goBack": "العودة",

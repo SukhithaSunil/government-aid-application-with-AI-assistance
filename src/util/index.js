@@ -1,9 +1,7 @@
-//common error wrapper - try catch -try block for callbacks
 export const tryCatchWrapper = (func, errorHandler) => {
   try {
     const result = func()
 
-    // Handle promise-based functions
     if (result instanceof Promise) {
       return result.catch((error) => {
         errorHandler?.(error)
@@ -11,7 +9,6 @@ export const tryCatchWrapper = (func, errorHandler) => {
       })
     }
 
-    // Handle synchronous functions
     return result
   } catch (error) {
     errorHandler?.(error)

@@ -5,16 +5,20 @@ import {
   PersonalInformation,
   SituationDetails,
 } from '../../components'
+import {nameRegex} from '../../util/constants'
 
 export const getStepsConfig = (t) => ({
   1: {
     component: <PersonalInformation />,
     schema: yup.object().shape({
-      name: yup.string().required(t('validations.name')),
+      name: yup
+        .string()
+        .required(t('validations.name'))
+        .matches(nameRegex, t('validations.name_invalid')),
       mail: yup
         .string()
-        .email(t('validations.invalidMail'))
-        .required(t('validations.mail')),
+        .required(t('validations.mail'))
+        .email(t('validations.invalidMail')),
       nationalId: yup.string().required(t('validations.nationalId')),
       dateOfBirth: yup.date().required(t('validations.dateOfBirth')),
       address: yup.string().required(t('validations.address')),
@@ -24,9 +28,8 @@ export const getStepsConfig = (t) => ({
       gender: yup.string().required(t('validations.gender')),
       phone: yup
         .string()
-        .matches(/^[0-9]{9}$/, t('validations.phoneFormat'))
-        .typeError(t('validations.phone'))
-        .required(t('validations.phone')),
+        .required(t('validations.phone'))
+        .matches(/^[0-9]{9}$/, t('validations.phoneFormat')),
     }),
   },
   2: {
@@ -43,8 +46,8 @@ export const getStepsConfig = (t) => ({
         .required(t('validations.employmentStatus')),
       monthlyIncome: yup
         .number()
-        .max(5000, t('validations.maxMonthlyIncome'))
         .required(t('validations.monthlyIncomeRequired'))
+        .max(5000, t('validations.maxMonthlyIncome'))
         .typeError(t('validations.inValidMonthlyIncome')),
       housingStatus: yup.string().required(t('validations.housingStatus')),
     }),

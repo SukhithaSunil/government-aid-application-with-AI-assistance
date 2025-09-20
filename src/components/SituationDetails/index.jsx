@@ -5,7 +5,6 @@ import {useFormContext} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
 import {useDispatch, useSelector} from 'react-redux'
 import {getCommonProps} from '../../util'
-import {Suggestions} from '../Assistant'
 import ControlledTextField from '../Form/ControlledTextField'
 import {
   AI_ASSISTANCE_API_URL,
@@ -18,6 +17,7 @@ import {
   fetchLoading,
   fetchSuccess,
 } from '../../store/generateSuggestionSlice'
+import {Suggestions} from '../AIAssistedSuggestions'
 
 const SituationDetails = () => {
   const {

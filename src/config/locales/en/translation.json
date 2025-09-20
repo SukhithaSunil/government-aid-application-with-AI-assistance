@@ -27,8 +27,10 @@
   "validations": {
     "name": "Name is required",
     "mail": "Email is required",
-    "invalidMail": "Invalid email format",
+    "invalidMail": "Please enter a valid mail id",
+    "name_invalid": "Please enter a valid name.",
     "nationalId": "National ID is required",
+    "inValidMonthlyIncome": "Please enter a valid income",
     "dateOfBirth": "Date of Birth is required",
     "address": "Address is required",
     "city": "City is required",
@@ -36,7 +38,7 @@
     "country": "Country is required",
     "gender": "Gender is required",
     "phone": "Phone number is required",
-    "phoneFormat": "Phone number must be 9 digits'",
+    "phoneFormat": "Phone number must be 9 digits",
     "maritalStatus": "Marital Status is required",
     "dependents": "Dependents must be a number",
     "employmentStatus": "Employment Status is required",
@@ -44,7 +46,8 @@
     "housingStatus": "Housing Status is required",
     "currentFinancialSituation": "Current Financial Situation is required",
     "employmentCircumstances": "Employment Circumstances is required",
-    "reasonForApplying": "Reason for Applying is required"
+    "reasonForApplying": "Reason for Applying is required",
+    "maxMonthlyIncome": "Maximum income allowed is 5000"
   },
   "labels": {
     "goBack": "Go Back",

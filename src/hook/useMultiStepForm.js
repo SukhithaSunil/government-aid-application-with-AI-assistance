@@ -4,7 +4,7 @@ import {useEffect, useMemo, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
 import {useDispatch, useSelector} from 'react-redux'
-import {getStepsConfig} from '../features/Form/formStepsConfig'
+import {getStepsConfig} from '../features/UserCreationForm/formStepsConfig'
 import {
   fetchFailure,
   fetchLoading,
@@ -16,11 +16,11 @@ import {CREATE_USER_API_URL, DateFormat, HTTP_METHODS} from '../util/constants'
 import useFetch from './useFetch'
 
 export const useMultiStepForm = () => {
-  const {t} = useTranslation()
+  const {t, i18n} = useTranslation()
   const dispatch = useDispatch()
   const form = useSelector((state) => state.form)
   const {currentStep, completedStep, formState, loading} = form
-  const stepsConfig = useMemo(() => getStepsConfig(t), [t])
+  const stepsConfig = useMemo(() => getStepsConfig(t), [i18n.language])
   const currentSchema = stepsConfig[currentStep]?.schema
   const StepComponent = stepsConfig[currentStep]?.component
   const steps = useMemo(

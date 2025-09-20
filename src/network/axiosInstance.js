@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {ERROR_CODES, ERROR_MESSAGES, HTTP_STATUS} from '../util/constants'
 
 const axiosInstance = axios.create({
   timeout: 10000,
@@ -19,21 +20,21 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.code === 'ECONNABORTED') {
-      error.customMessage = 'Request timed out. Please try again.'
+    if (error.code === ERROR_CODES.TIMEOUT) {
+      error.customMessage = ERROR_MESSAGES.TIMEOUT
     }
-    // keep http. errorname , error.code in constants
+
     if (error.response) {
       const {status} = error.response
-      if (status === 401) {
-        error.customMessage = 'Authentication failed.'
-      } else if (status >= 500) {
-        error.customMessage = 'Server error. Please try again later.'
+      if (status === HTTP_STATUS.UNAUTHORIZED) {
+        error.customMessage = ERROR_MESSAGES.AUTH_FAILED
+      } else if (status >= HTTP_STATUS.SERVER_ERROR_START) {
+        error.customMessage = ERROR_MESSAGES.SERVER_ERROR
       } else {
-        error.customMessage = 'Something went wrong.'
+        error.customMessage = ERROR_MESSAGES.GENERIC_ERROR
       }
     } else if (!error.response) {
-      error.customMessage = 'Network error. Please check your connection.'
+      error.customMessage = ERROR_MESSAGES.NETWORK_ERROR
     }
 
     return Promise.reject(error)

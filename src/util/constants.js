@@ -41,3 +41,20 @@ export const OPENAI_CONFIG = {
     MAX_WORDS: 50,
   },
 }
+export const ERROR_CODES = {
+  TIMEOUT: 'ECONNABORTED',
+}
+
+export const HTTP_STATUS = {
+  UNAUTHORIZED: 401,
+  SERVER_ERROR_START: 500,
+}
+
+export const ERROR_MESSAGES = {
+  TIMEOUT: 'Request timed out. Please try again.',
+  AUTH_FAILED: 'Authentication failed.',
+  SERVER_ERROR: 'Server error. Please try again later.',
+  GENERIC_ERROR: 'Something went wrong.',
+  NETWORK_ERROR: 'Network error. Please check your connection.',
+}
+export const nameRegex = /^[a-zA-Z\s]+$/

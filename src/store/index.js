@@ -6,7 +6,6 @@ import generateSuggestionSlice from './generateSuggestionSlice.js'
 import {autoSaveMiddleware} from './autoSaveMiddleware.js'
 
 const formState = readState()
-console.log(formState)
 export const store = configureStore({
   reducer: {
     form: formSlice,

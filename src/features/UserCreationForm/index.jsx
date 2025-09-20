@@ -8,7 +8,7 @@ import LanguageSwitch from '../../components/LanguageSwitch'
 import {useMultiStepForm} from '../../hook/useMultiStepForm'
 import ActionButtons from './ActionButtons'
 
-const Form = () => {
+const UserCreationForm = () => {
   const {t} = useTranslation()
   const {
     methods,
@@ -53,4 +53,4 @@ const Form = () => {
   )
 }
 
-export default Form
+export default UserCreationForm
