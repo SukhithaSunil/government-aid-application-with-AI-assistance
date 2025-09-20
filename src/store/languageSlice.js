@@ -9,8 +9,8 @@ const languageSlice = createSlice({
   name: 'language',
   initialState,
   reducers: {
-    toggleLanguage: (state) => {
-      state.currentLanguage = state.currentLanguage === LANGUAGES.EN ? LANGUAGES.AR : LANGUAGES.EN
+    toggleLanguage: (state, action) => {
+      state.currentLanguage = action.payload
     },
   },
 })

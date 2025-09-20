@@ -1,5 +1,6 @@
 import {TextField, MenuItem, Box} from '@mui/material'
 import {Controller} from 'react-hook-form'
+import PropTypes from 'prop-types'
 
 const ControlledTextField = ({
   control,
@@ -23,7 +24,7 @@ const ControlledTextField = ({
               fullWidth
               select={type === 'select'}
               multiline={isMultiLine}
-              minRows={isMultiLine ? 3 : 1}
+              {...(isMultiLine && {minRows: 3})}
               {...field}
               slotProps={{
                 htmlInput: {
@@ -55,6 +56,23 @@ const ControlledTextField = ({
       }}
     />
   )
+}
+
+ControlledTextField.propTypes = {
+  control: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  inputProps: PropTypes.object,
+  error: PropTypes.object,
+  type: PropTypes.oneOf(['text', 'select']),
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    })
+  ),
+  isMultiLine: PropTypes.bool,
 }
 
 export default ControlledTextField

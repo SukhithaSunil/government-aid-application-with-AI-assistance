@@ -4,10 +4,20 @@ import {useEffect, useState} from 'react'
 import {useFormContext} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
 import {useDispatch, useSelector} from 'react-redux'
-import {generateSuggestion} from '../../store/generateSuggestionSlice'
-import {getCommonProps} from '../../util/index'
-import {Suggestions} from '../Assistant/suggestions'
+import {getCommonProps} from '../../util'
+import {Suggestions} from '../Assistant'
 import ControlledTextField from '../Form/ControlledTextField'
+import {
+  AI_ASSISTANCE_API_URL,
+  HTTP_METHODS,
+  OPENAI_CONFIG,
+} from '../../util/constants'
+import useFetch from '../../hook/useFetch'
+import {
+  fetchFailure,
+  fetchLoading,
+  fetchSuccess,
+} from '../../store/generateSuggestionSlice'
 
 const SituationDetails = () => {
   const {
@@ -15,13 +25,22 @@ const SituationDetails = () => {
     loading,
     error,
   } = useSelector((state) => state.generateSuggestion)
+  const {currentLanguage} = useSelector((state) => state.language)
   const dispatch = useDispatch()
   const {
     control,
     formState: {errors},
-    resetField,
+    setValue,
   } = useFormContext()
   const {t} = useTranslation()
+  const {execute} = useFetch(
+    AI_ASSISTANCE_API_URL,
+    HTTP_METHODS.POST,
+    () => dispatch(fetchLoading()),
+    (data) => dispatch(fetchSuccess(data)),
+    (err) => dispatch(fetchFailure(err.message)),
+    true
+  )
   const getTextFieldProps = (name) => ({
     ...getCommonProps(name, `${t(name)}`),
     control,
@@ -35,13 +54,28 @@ const SituationDetails = () => {
 
   const handleSuggestion = async (field) => {
     setSelectedField(field)
-    dispatch(generateSuggestion(t(field)))
+    setValue(field, t('labels.generating'), {
+      shouldDirty: true,
+      shouldTouch: true,
+    })
+    execute({
+      model: OPENAI_CONFIG.MODEL,
+      messages: [
+        OPENAI_CONFIG.SYSTEM_MESSAGE,
+        {
+          role: OPENAI_CONFIG.ROLE,
+          content: `I am filling out a government financial assistance form and need help writing about my financial hardship. Can you write a professional statement for the ${t(field)} section in minimum ${OPENAI_CONFIG.MESSAGE_LIMITS.MIN_WORDS} words and maximum ${OPENAI_CONFIG.MESSAGE_LIMITS.MAX_WORDS} words in ${t(currentLanguage)}?`,
+        },
+      ],
+    })
   }
 
   const onAccept = (text) => {
     setEditedSuggestions({...editedSuggestions, [selectedField]: text})
-    resetField(selectedField, {
-      defaultValue: text,
+    setValue(selectedField, text, {
+      shouldValidate: true,
+      shouldDirty: true,
+      shouldTouch: true,
     })
     togglePopup()
   }
@@ -55,6 +89,7 @@ const SituationDetails = () => {
     'employmentCircumstances',
     'reasonForApplying',
   ]
+
   return (
     <Grid container>
       <Grid size={{xs: 12}}>
@@ -63,7 +98,7 @@ const SituationDetails = () => {
         </Typography>
       </Grid>
       {queries.map((item) => (
-        <Grid item size={{xs: 12}} key={item}>
+        <Grid size={{xs: 12}} key={item}>
           <Button
             className="mb-1.5"
             onClick={() => handleSuggestion(item)}
@@ -72,7 +107,7 @@ const SituationDetails = () => {
             startIcon={<AutoAwesomeIcon />}
             aria-busy={loading ? 'true' : 'false'}
             aria-live="polite">
-            {loading ? t('labels.generating') : t('labels.helpme')}
+            {t('labels.helpme')}
           </Button>
           <ControlledTextField {...getTextFieldProps(item)} isMultiLine />
         </Grid>
@@ -83,6 +118,7 @@ const SituationDetails = () => {
         title={t('labels.suggestion')}
         description={suggestion}
         onAccept={onAccept}
+        activeField={selectedField}
       />
     </Grid>
   )

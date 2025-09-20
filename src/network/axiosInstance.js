@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const axiosInstance = axios.create({
-  baseURL: 'https://api.openai.com/v1',
   timeout: 10000,
 })
 const apiKey = process.env.APP_OPEN_API_KEY
@@ -9,7 +8,7 @@ const apiKey = process.env.APP_OPEN_API_KEY
 axiosInstance.interceptors.request.use(
   (config) => {
     if (config.needsAuth) {
-      config.headers['Authorization'] = `Bearer ${apiKey}`;
+      config.headers['Authorization'] = `Bearer ${apiKey}`
     }
     config.headers['Content-Type'] = 'application/json'
     return config
@@ -18,14 +17,12 @@ axiosInstance.interceptors.request.use(
 )
 
 axiosInstance.interceptors.response.use(
-  (response) => 
-    response
-  ,
+  (response) => response,
   (error) => {
     if (error.code === 'ECONNABORTED') {
       error.customMessage = 'Request timed out. Please try again.'
     }
-
+    // keep http. errorname , error.code in constants
     if (error.response) {
       const {status} = error.response
       if (status === 401) {

@@ -1,107 +1,25 @@
-import {yupResolver} from '@hookform/resolvers/yup'
-import {
-  Backdrop,
-  Box,
-  CircularProgress,
-  CssBaseline,
-  Paper,
-} from '@mui/material'
+import {Backdrop, Box, CircularProgress, Paper} from '@mui/material'
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider'
-import dayjs from 'dayjs'
-import React, {useEffect, useState} from 'react'
-import {FormProvider, useForm} from 'react-hook-form'
+import {FormProvider} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
-import {useDispatch, useSelector} from 'react-redux'
-import {
-  Confirmation,
-  FamilyandFinancialInfo,
-  GlobalErrorToast,
-  LanguageSwitch,
-  PersonalInformation,
-  ProgressBar,
-  SituationDetails,
-} from '../../components'
-import {createUserProfile, next} from '../../store/formSlice'
-import {filterOutCompleatedFields} from '../../util/index'
+import {GlobalErrorToast, ProgressBar} from '../../components'
+import LanguageSwitch from '../../components/LanguageSwitch'
+import {useMultiStepForm} from '../../hook/useMultiStepForm'
 import ActionButtons from './ActionButtons'
-import {useValidationSchema} from '../../hook/useValidationSchema'
 
 const Form = () => {
   const {t} = useTranslation()
-  const dispatch = useDispatch()
-  const {currentStep, completedStep, formState, loading} = useSelector(
-    (state) => state.form
-  )
-  const [hasVisitedPreviousStep, setHasVisitedPreviousStep] = useState(false)
-  const validationSchema = useValidationSchema(currentStep)
-
-  const methods = useForm({
-    mode: 'onChange',
-    reValidateMode: 'onChange',
-    resolver: yupResolver(validationSchema),
-    defaultValues: {
-      ...formState,
-      dateOfBirth: formState?.dateOfBirth
-        ? dayjs(formState.dateOfBirth)
-        : dayjs(),
-    },
-  })
-  const steps = React.useMemo(
-    () => [t('personalInfo'), t('familyInfo'), t('situation')],
-    [t]
-  )
-
-  const stepContent = React.useMemo(() => {
-    switch (currentStep) {
-      case 1:
-        return <PersonalInformation />
-      case 2:
-        return <FamilyandFinancialInfo />
-      case 3:
-        return <SituationDetails />
-      default:
-        return <Confirmation />
-    }
-  }, [currentStep])
-
-  const {isDirty, isValid, errors} = methods.formState
-  const doErrorsExist = Object.keys(errors).length > 0
-  const isStepCompleted = completedStep >= currentStep
-  const isValidForm = isValid && !doErrorsExist && (isDirty || isStepCompleted)
-
-  const triggerForm = async (data) => {
-    await methods.trigger(data)
-  }
-  useEffect(() => {
-    const errorFields = Object.keys(methods.formState.errors)
-    if (errorFields) methods.clearErrors(errorFields)
-    if (isStepCompleted) triggerForm()
-    else if (currentStep === completedStep + 1 && hasVisitedPreviousStep) {
-      triggerForm()
-      setHasVisitedPreviousStep(false)
-    }
-  }, [currentStep])
-
-  const [isCtaDisabled, setIsCtaDisabled] = useState(false)
-  useEffect(() => {
-    setIsCtaDisabled(!isValidForm)
-  }, [isValidForm])
-
-  const onSubmit = (formData) => {
-    const dateOfBirth = formData.dateOfBirth
-    const formattedData = {
-      ...formData,
-      dateOfBirth: dayjs(dateOfBirth).format('MM/DD/YYYY'),
-    }
-    if (currentStep === steps.length) {
-      dispatch(createUserProfile(formattedData))
-    } else {
-      const filteredData = filterOutCompleatedFields(currentStep, formattedData)
-      dispatch(next(filteredData))
-    }
-  }
-
+  const {
+    methods,
+    StepComponent,
+    steps,
+    isCtaDisabled,
+    loading,
+    onSubmit,
+    setHasVisitedPreviousStep,
+    currentStep,
+  } = useMultiStepForm()
   return (
     <main>
       <LanguageSwitch />
@@ -112,7 +30,7 @@ const Form = () => {
         <FormProvider {...methods}>
           <Box className="p-4 lg:pt-6">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              {stepContent}
+              {StepComponent}
             </LocalizationProvider>
           </Box>
           <ActionButtons

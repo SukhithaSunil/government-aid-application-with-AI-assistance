@@ -1,5 +1,3 @@
-// components/index.js
-
 export {default as Confirmation} from './Confirmation'
 export {default as FamilyandFinancialInfo} from './FamilyandFinancialInfo'
 export {default as LanguageSwitch} from './LanguageSwitch'

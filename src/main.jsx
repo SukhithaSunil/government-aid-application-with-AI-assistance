@@ -6,7 +6,7 @@ import App from './App.jsx'
 import {MuiTheme} from './config/MuiTheme.js'
 import {RTLProvider} from './config/RTL.jsx'
 import './index.css'
-import {store} from './store/index.js'
+import {store} from './store'
 import {CssBaseline} from '@mui/material'
 
 const theme = MuiTheme()

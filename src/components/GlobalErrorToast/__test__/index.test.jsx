@@ -1,7 +1,6 @@
-
 import '@testing-library/jest-dom'
-import { render, screen } from '../../../util//test-utils'
-import GlobalErrorToast from '../index'
+import {render, screen} from '../../../util/test-utils'
+import GlobalErrorToast from '..'
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -13,8 +12,8 @@ describe('GlobalErrorToast', () => {
   it('does not render when no errors exist', () => {
     render(<GlobalErrorToast />, {
       preloadedState: {
-        form: { error: null },
-        generateSuggestion: { error: null },
+        form: {error: null},
+        generateSuggestion: {error: null},
       },
     })
 
@@ -24,8 +23,8 @@ describe('GlobalErrorToast', () => {
   it('renders and clears suggestion error', async () => {
     render(<GlobalErrorToast />, {
       preloadedState: {
-        form: { error: null },
-        generateSuggestion: { error: 'Something went wrong with AI' },
+        form: {error: null},
+        generateSuggestion: {error: 'Something went wrong with AI'},
       },
     })
 
@@ -33,6 +32,4 @@ describe('GlobalErrorToast', () => {
     expect(alert[0]).toBeInTheDocument()
     expect(alert[0]).toHaveTextContent('failedToFetchSuggestion')
   })
-
-
 })

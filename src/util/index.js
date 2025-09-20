@@ -1,29 +1,50 @@
-export const saveState = (state) => {
+//common error wrapper - try catch -try block for callbacks
+export const tryCatchWrapper = (func, errorHandler) => {
   try {
-    const serializedState = JSON.stringify(state)
-    localStorage.setItem('formState', serializedState)
-  } catch (e) {
-    console.warn('Failed to save state to localStorage:', e)
-  }
-}
-export const readState = () => {
-  try {
-    const serializedState = localStorage.getItem('formState')
-    if (serializedState === null) {
-      return undefined
+    const result = func()
+
+    // Handle promise-based functions
+    if (result instanceof Promise) {
+      return result.catch((error) => {
+        errorHandler?.(error)
+        return undefined
+      })
     }
-    return JSON.parse(serializedState)
-  } catch (e) {
-    console.warn('Failed to load state from localStorage:', e)
+
+    // Handle synchronous functions
+    return result
+  } catch (error) {
+    errorHandler?.(error)
     return undefined
   }
 }
 
-export const removeState = () => {
-  if (localStorage.getItem('formState')) {
-    localStorage.removeItem('formState')
-  }
+export const saveState = (state) => {
+  tryCatchWrapper(
+    () => {
+      const serializedState = JSON.stringify(state)
+      localStorage.setItem('formState', serializedState)
+    },
+    (e) => {
+      console.warn('Failed to save form progress:', e)
+    }
+  )
 }
+export const readState = () =>
+  tryCatchWrapper(
+    () => {
+      const serialized = localStorage.getItem('formState')
+      return serialized ? JSON.parse(serialized) : undefined
+    },
+    (e) => {
+      console.warn('Failed to load from storage:', e)
+    }
+  )
+
+export const removeState = () => {
+  localStorage.removeItem('formState')
+}
+
 export const getCommonProps = (name, label) => ({
   name,
   label,

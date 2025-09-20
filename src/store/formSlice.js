@@ -1,20 +1,6 @@
-import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import {saveState, delay, removeState} from '../util/index.js'
-const API_URL = 'http://localhost:3001/users'
-import axiosInstance from '../network/axiosInstance'
+import {createSlice} from '@reduxjs/toolkit'
+import {removeState, saveState} from '../util'
 
-export const createUserProfile = createAsyncThunk(
-  'form/createUserProfile',
-  async (postData, {rejectWithValue}) => {
-    try {
-      await delay(3000) // simulate a delay
-      const response = await axiosInstance.post(API_URL, [postData])
-      return response
-    } catch (err) {
-      return rejectWithValue(err.message || 'Something went wrong. Try again')
-    }
-  }
-)
 const formSlice = createSlice({
   name: 'form',
   initialState: {
@@ -48,7 +34,6 @@ const formSlice = createSlice({
       Object.assign(state.formState, action.payload)
       state.completedStep = Math.max(state.completedStep, state.currentStep)
       state.currentStep += 1
-      saveState(state)
     },
     goBack(state) {
       state.currentStep -= 1
@@ -56,24 +41,27 @@ const formSlice = createSlice({
     clearFormError: (state) => {
       state.error = null
     },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(createUserProfile.pending, (state) => {
-        state.loading = true
-        state.error = null
-      })
-      .addCase(createUserProfile.fulfilled, (state) => {
-        state.loading = false
-        state.currentStep += 1
-        removeState()
-      })
-      .addCase(createUserProfile.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
-      })
+    fetchLoading: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    fetchSuccess: (state) => {
+      state.loading = false
+      state.currentStep += 1
+    },
+    fetchFailure: (state, action) => {
+      state.loading = false
+      state.error = action.payload
+    },
   },
 })
 
-export const {next, goBack, clearFormError} = formSlice.actions
+export const {
+  next,
+  goBack,
+  clearFormError,
+  fetchFailure,
+  fetchLoading,
+  fetchSuccess,
+} = formSlice.actions
 export default formSlice.reducer

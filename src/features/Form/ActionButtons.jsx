@@ -1,10 +1,10 @@
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded'
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded'
-import { Box, Button } from '@mui/material'
-import { useCallback } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { goBack } from '../../store/formSlice'
+import {Box, Button} from '@mui/material'
+import {useCallback} from 'react'
+import {useTranslation} from 'react-i18next'
+import {useDispatch, useSelector} from 'react-redux'
+import {goBack} from '../../store/formSlice'
 
 const ActionButtons = ({
   isCtaDisabled,
@@ -14,7 +14,7 @@ const ActionButtons = ({
 }) => {
   const dispatch = useDispatch()
   const {t} = useTranslation()
-  const {currentStep, completedStep} = useSelector((state) => state.form)
+  const {currentStep, completedStep} = useSelector((state) => state.form || {})
 
   const handleBack = useCallback(() => {
     if (currentStep - 1 === completedStep) {

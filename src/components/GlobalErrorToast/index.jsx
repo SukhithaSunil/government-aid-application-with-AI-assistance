@@ -11,9 +11,10 @@ import React from 'react'
 const GlobalErrorToast = () => {
   const dispatch = useDispatch()
   const {t} = useTranslation()
-  const suggestionError = useSelector((state) => state.generateSuggestion.error)
-  const formSubmissionError = useSelector((state) => state.form.error)
-
+  const {error: suggestionError} = useSelector(
+    (state) => state.generateSuggestion
+  )
+  const {error: formSubmissionError} = useSelector((state) => state.form)
   const [open, setOpen] = useState(false)
   const [message, setMessage] = useState('')
 
@@ -50,7 +51,7 @@ const GlobalErrorToast = () => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={3000}
+      autoHideDuration={5000}
       onClose={handleClose}
       message={message}
       data-testid={'alert'}

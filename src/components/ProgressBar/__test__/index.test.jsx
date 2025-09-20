@@ -1,5 +1,5 @@
-import {render, screen} from '../../../util//test-utils'
-import ProgressBar from '../index'
+import {render, screen} from '../../../util/test-utils'
+import ProgressBar from '..'
 
 describe('ProgressBar', () => {
   const steps = ['Step 1', 'Step 2', 'Step 3']

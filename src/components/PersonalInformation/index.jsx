@@ -8,8 +8,8 @@ import {
 import {DatePicker} from '@mui/x-date-pickers'
 import {Controller, useFormContext} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
-import {city, country, states} from '../../util/constants'
-import {getCommonProps} from '../../util/index'
+import {city, country, states} from './constants'
+import {getCommonProps} from '../../util'
 import ControlledTextField from '../Form/ControlledTextField'
 
 const PersonalInformation = () => {
@@ -34,7 +34,7 @@ const PersonalInformation = () => {
       <Grid size={{xs: 12, md: 6}}>
         <ControlledTextField {...getTextFieldProps('name')} />
       </Grid>
-      <Grid size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}} className="mb-4">
         <Controller
           name="gender"
           control={control}
@@ -58,7 +58,7 @@ const PersonalInformation = () => {
         <ControlledTextField {...getTextFieldProps('mail')} />
       </Grid>
 
-      <Grid size={{xs: 12, md: 6}}>
+      <Grid size={{xs: 12, md: 6}} className="mb-6">
         <Controller
           name="dateOfBirth"
           control={control}
