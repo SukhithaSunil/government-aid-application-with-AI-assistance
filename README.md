@@ -1,12 +1,12 @@
-# Social Support Application — Front-End
+# Social Support Application
 
-> A polished front-end for a government social support portal. This repo implements a responsive, accessible, multi-step application wizard with optional AI assistance for writing free-text fields.
+> A modern, user-friendly front-end for a government social support portal, featuring a responsive and accessible multi-step application wizard with integrated AI assistance for composing free-text responses.
 
 ---
 
 ## 🚀 Quick overview
 
-This project is a client-side React application built to let citizens apply for financial assistance through a clear, accessible multi-step form. Step 3 includes an integrated **"Help Me Write"** flow that calls the OpenAI Chat Completions API to generate text suggestions for the applicant.
+This React application demonstrates how citizens can apply for financial assistance using a clear and accessible multi-step form. Step 3 features an integrated "Help Me Write" tool that leverages the OpenAI Chat Completions API to provide suggested text for the applicant.
 
 ---
 
@@ -154,7 +154,7 @@ npm run build
 ## ♿ UX, Accessibility & i18n
 
 * Added aria-invalid and aria-describedby when an error is present. Screen readers can announce that the field is invalid and point to the error message.
-* Error Message with role="alert" The <p> element containing the validation message has role="alert", ensuring screen readers announce the error immediately when it appears.
+* Error Message with role="alert"The <p> element containing the validation message has role="alert", ensuring screen readers announce the error immediately when it appears.
 * Keyboard: Tab order logical, Enter to submit step, Esc to close modals.
 * Arabic support toggles layout to RTL and flips progress bar order.
 * Language switch available at all times and persisted across sessions.
@@ -202,4 +202,4 @@ This project is MIT licensed. For questions, architecture notes or to request a 
 
 ---
 
-*Prepared by: Sukhitha Sunil*\\
+*Prepared by: Sukhitha Sunil*
