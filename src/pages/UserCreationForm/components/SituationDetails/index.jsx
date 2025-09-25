@@ -4,20 +4,20 @@ import {useEffect, useState} from 'react'
 import {useFormContext} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
 import {useDispatch, useSelector} from 'react-redux'
-import {getCommonProps} from '../../util'
-import ControlledTextField from '../Form/ControlledTextField'
+import ControlledTextField from '../../../../components/Form/ControlledTextField'
 import {
   AI_ASSISTANCE_API_URL,
   HTTP_METHODS,
   OPENAI_CONFIG,
-} from '../../util/constants'
-import useFetch from '../../hook/useFetch'
+} from '../../../../util/constants'
+import useFetch from '../../../../hook/useFetch'
 import {
   fetchFailure,
   fetchLoading,
   fetchSuccess,
-} from '../../store/generateSuggestionSlice'
+} from '../../../../store/generateSuggestionSlice'
 import {Suggestions} from '../AIAssistedSuggestions'
+import { getCommonProps } from '../../../../util'
 
 const SituationDetails = () => {
   const {

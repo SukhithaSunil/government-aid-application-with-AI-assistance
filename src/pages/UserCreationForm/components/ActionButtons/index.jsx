@@ -4,7 +4,7 @@ import {Box, Button} from '@mui/material'
 import {useCallback} from 'react'
 import {useTranslation} from 'react-i18next'
 import {useDispatch, useSelector} from 'react-redux'
-import {goBack} from '../../store/formSlice'
+import {goBack} from '../../../../store/formSlice'
 
 const ActionButtons = ({
   isCtaDisabled,

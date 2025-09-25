@@ -3,8 +3,8 @@ import './App.css'
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom'
 import {CircularProgress} from '@mui/material'
 import ErrorBoundary from './components/ErrorBoundary'
-const UserCreationForm = React.lazy(() => import('./features/UserCreationForm'))
-const NotFound = React.lazy(() => import('./features/NotFound'))
+const UserCreationForm = React.lazy(() => import('./pages/UserCreationForm'))
+const NotFound = React.lazy(() => import('./pages/NotFound'))
 
 const App = () => {
   const fallback = (

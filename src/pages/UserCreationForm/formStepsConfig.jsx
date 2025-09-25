@@ -1,11 +1,9 @@
 import * as yup from 'yup'
-import {
-  Confirmation,
-  FamilyandFinancialInfo,
-  PersonalInformation,
-  SituationDetails,
-} from '../../components'
-import {nameRegex} from '../../util/constants'
+import {mobileNumberRegex, nameRegex, nationalIdRegex} from '../../util/constants'
+import PersonalInformation from './components/PersonalInformation'
+import FamilyandFinancialInfo from './components/FamilyandFinancialInfo'
+import SituationDetails from './components/SituationDetails'
+import Confirmation from './components/Confirmation'
 
 export const getStepsConfig = (t) => ({
   1: {
@@ -19,7 +17,10 @@ export const getStepsConfig = (t) => ({
         .string()
         .required(t('validations.mail'))
         .email(t('validations.invalidMail')),
-      nationalId: yup.string().required(t('validations.nationalId')),
+      nationalId: yup
+        .string()
+        .required(t('validations.nationalId'))
+        .matches(nationalIdRegex, t('validations.idFormat')),
       dateOfBirth: yup.date().required(t('validations.dateOfBirth')),
       address: yup.string().required(t('validations.address')),
       city: yup.string().required(t('validations.city')),
@@ -29,7 +30,7 @@ export const getStepsConfig = (t) => ({
       phone: yup
         .string()
         .required(t('validations.phone'))
-        .matches(/^[0-9]{9}$/, t('validations.phoneFormat')),
+        .matches(mobileNumberRegex, t('validations.phoneFormat')),
     }),
   },
   2: {

@@ -1,6 +1,6 @@
-import {render, screen, fireEvent} from '../../../util/test-utils'
+import {render, screen, fireEvent} from '../../../../../util/test-utils'
 import React from 'react'
-import {Suggestions} from '../index'
+import {Suggestions} from '../'
 import * as reactI18next from 'react-i18next'
 import * as reactHookForm from 'react-hook-form'
 

@@ -47,7 +47,9 @@
     "currentFinancialSituation": "Current Financial Situation is required",
     "employmentCircumstances": "Employment Circumstances is required",
     "reasonForApplying": "Reason for Applying is required",
-    "maxMonthlyIncome": "Maximum income allowed is 5000"
+    "maxMonthlyIncome": "Maximum income allowed is 5000",
+    "maxDependents":"Maximum dependents allowed is 10",
+    "idFormat":"National Id must be 8 characters"
   },
   "labels": {
     "goBack": "Go Back",

@@ -4,7 +4,7 @@ import {useEffect, useMemo, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
 import {useDispatch, useSelector} from 'react-redux'
-import {getStepsConfig} from '../features/UserCreationForm/formStepsConfig'
+import {getStepsConfig} from '../pages/UserCreationForm/formStepsConfig'
 import {
   fetchFailure,
   fetchLoading,

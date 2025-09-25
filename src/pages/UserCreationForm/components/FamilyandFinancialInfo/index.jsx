@@ -1,8 +1,8 @@
 import {Grid, Typography} from '@mui/material'
 import {useFormContext} from 'react-hook-form'
 import {useTranslation} from 'react-i18next'
-import {getCommonProps} from '../../util'
-import ControlledTextField from '../Form/ControlledTextField'
+import {getCommonProps} from '../../../../util'
+import ControlledTextField from '../../../../components/Form/ControlledTextField'
 import {employmentStatus, housingStatus, maritalStatus} from './constants'
 
 const FamilyandFinancialInfo = () => {

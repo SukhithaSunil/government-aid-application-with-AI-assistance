@@ -47,7 +47,9 @@
     "currentFinancialSituation": "الوضع المالي الحالي مطلوب",
     "employmentCircumstances": "الظروف الوظيفية مطلوبة",
     "reasonForApplying": "سبب التقديم مطلوب",
-    "maxMonthlyIncome": "الحد الأقصى للدخل المسموح به هو 5000"
+    "maxMonthlyIncome": "الحد الأقصى للدخل المسموح به هو 5000",
+    "maxDependents": "الحد الأقصى للمُعالين المسموح به هو 10",
+    "idFormat": "يرجى إدخال معرف صالح"
   },
   "labels": {
     "goBack": "العودة",

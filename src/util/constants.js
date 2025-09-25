@@ -58,3 +58,5 @@ export const ERROR_MESSAGES = {
   NETWORK_ERROR: 'Network error. Please check your connection.',
 }
 export const nameRegex = /^[a-zA-Z\s]+$/
+export const mobileNumberRegex = /^[0-9]{9}$/
+export const nationalIdRegex = /^[A-Za-z0-9]{8}$/

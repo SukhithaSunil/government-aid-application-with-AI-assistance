@@ -6,7 +6,7 @@ import {useTranslation} from 'react-i18next'
 import {GlobalErrorToast, ProgressBar} from '../../components'
 import LanguageSwitch from '../../components/LanguageSwitch'
 import {useMultiStepForm} from '../../hook/useMultiStepForm'
-import ActionButtons from './ActionButtons'
+import ActionButtons from './components/ActionButtons'
 
 const UserCreationForm = () => {
   const {t} = useTranslation()
