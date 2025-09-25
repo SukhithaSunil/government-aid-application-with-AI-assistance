@@ -1,204 +1,242 @@
 # Social Support Application
 
-> A modern, user-friendly front-end for a government social support portal, featuring a responsive and accessible multi-step application wizard with integrated AI assistance for composing free-text responses.
+> A modern, user‑friendly front-end for a government social support portal, featuring a responsive and accessible multi-step application wizard with integrated AI assistance for composing free-text responses.
 
 ---
 
-## 🚀 Quick overview
+## 🚀 Quick Overview
 
-This React application demonstrates how citizens can apply for financial assistance using a clear and accessible multi-step form. Step 3 features an integrated "Help Me Write" tool that leverages the OpenAI Chat Completions API to provide suggested text for the applicant.
+This React application demonstrates how citizens can apply for financial assistance using a clear and accessible multi-step form. Step 3 features an integrated **“Help Me Write”** tool that leverages the OpenAI Chat Completions API to provide suggested text for the applicant.
 
 ---
 
-## 📋 Table of contents
+## 📋 Table of Contents
 
-1. [Features](#-features)
-2. [Tech stack](#-tech-stack)
-3. [Getting started](#-getting-started)
-
-   * [Getting an OpenAI API key](#getting-an-openai-api-key)
-   * [Environment variables](#environment-variables)
-   * [Install & run](#install--run)
-4. [OpenAI integration](#-openai-integration)
-5. [UX / Accessibility / i18n](#-ux--accessibility--i18n)
-6. [Local save & mock submit](#-local-save--mock-submit)
-7. [Architecture & decisions](#-architecture--decisions)
-8. [Improvements & roadmap](#-improvements--roadmap)
-9. [Troubleshooting](#-troubleshooting)
-10. [License & contact](#-license--contact)
+1. [Features](#-features)  
+2. [Tech Stack](#-tech-stack)  
+3. [Project Structure](#-project-structure)  
+4. [Getting Started](#-getting-started)  
+   * [Getting an OpenAI API Key](#getting-an-openai-api-key)  
+   * [Environment Variables](#environment-variables)  
+   * [Install & Run](#install--run)  
+5. [OpenAI Integration](#-openai-integration-help-me-write)  
+6. [UX / Accessibility / i18n](#-ux--accessibility--i18n)  
+7. [Local Save & Mock Submit](#-local-save--mock-submit)  
+8. [Architecture & Decisions](#-architecture--decisions)  
+9. [Improvements & Roadmap](#-improvements--roadmap)  
+10. [Troubleshooting](#-troubleshooting)  
+11. [License & Contact](#-license--contact)
 
 ---
 
 ## ✨ Features
 
-* 🧭 **Responsive multi-step  wizard with progress tracking**
-* 🌐 **Language switching feature** (English + Arabic, full RTL support)
-* 💾 **State persistence**: Auto save user progress to local storage and resume functionality.
-* ✅ **Form validations** powered by React Hook Form + Yup.
-* 🔗 **Common fetch hook & Axios** for all API calls (mock and OpenAI).
-* 🗄️ **Mock API using json-server** to simulate backend endpoints.
-* 📤 **Data submission to mock API** with proper success/error handling.
-* ✍️ **Help Me Write** button for each Step 3 textarea — shows AI suggestion modal with Accept / Edit / Discard.
-* 🔔 **Toast notifications** for API error responses and important status messages.
-* 🚧 **Routing to Not Found page** for unauthorized or unknown URLs.
-* 🛡️ **Error Boundary** to gracefully handle unexpected rendering errors.
-* 💤 **Lazy loading** of route-based components for optimal performance.
-* ♿ **Accessibility**: with Aria & keyboard navigation support.
-* ⚠️ **Graceful handling of errors** (timeouts, API failures with Axios interceptors).
-* 🏷️ **PropTypes** used for props validation.
+* 🧭 **Responsive multi-step wizard with progress tracking**  
+* 🌐 **Language switching** (English + Arabic, full RTL support)  
+* 💾 **State persistence**: auto-save progress to local storage with resume functionality  
+* ✅ **Form validation** powered by React Hook Form + Yup  
+* 🔗 **Unified API layer** with Axios + custom fetch hook  
+* 🗄️ **Mock API** using json-server for local development  
+* 📤 **Data submission** to mock API with success/error handling  
+* ✍️ **Help Me Write** button in Step 3 textareas — shows AI suggestion modal with Accept / Edit / Discard  
+* 🔔 **Toast notifications** for API errors and key status messages  
+* 🚧 **404 routing** for unknown or unauthorized URLs  
+* 🛡️ **Error Boundary** to gracefully handle unexpected runtime errors  
+* 💤 **Lazy loading** of route-based components for optimal performance  
+* ♿ **Accessibility** with ARIA attributes and full keyboard navigation  
+* ⚠️ **Error handling** (timeouts, API failures via Axios interceptors)  
+* 🏷️ **PropTypes** for component prop validation  
 
 ---
 
-## 🧰 Tech stack
+## 🧰 Tech Stack
 
-* Framework: **React (v18+)**
-* Styling: **Tailwind CSS**
-* Component library:  **Material UI**
-* Forms: **React Hook Form** + **Yup** for validation
-* State: **Redux Toolkit** (global state persistence)
-* API calls: **Axios** + custom common fetch hook
-* Mock API: **json-server** (for local testing and submissions)
-* i18n: **react-i18next** (EN + AR with RTL handling)
-* Routing: **React Router** (multi-step wizard + 404 route + lazy loading)
-* Testing: **Jest** + **React Testing Library** (sample tests included)
+* **Framework:** React 18+  
+* **Styling:** Tailwind CSS  
+* **Component Library:** Material UI  
+* **Forms & Validation:** React Hook Form + Yup  
+* **State Management:** Redux Toolkit
+* **API Calls:** Axios + common fetch hook  
+* **Mock Backend:** json-server  
+* **i18n:** react-i18next (EN + AR with RTL handling)  
+* **Routing:** React Router (multi-step wizard, 404 route, lazy loading)  
+* **Testing:** Jest + React Testing Library
 
 ---
 
-## 🏁 Getting started
-
-### Getting an OpenAI API key
-
-To enable the **Help Me Write** feature you need an OpenAI API key.
-
-1. **Create an OpenAI account**
-   Go to [https://platform.openai.com/signup](https://platform.openai.com/signup) and create a free or paid account.
-
-2. **Generate a key**
-   After signing in, open the menu in the top right → **View API keys** → **Create new secret key**.
-
-3. **Copy the key safely**
-   Copy the generated key. You will not be able to view it again.
-
-4. **Store it in an environment file**
-   Add it to a local `.env` file in this project as shown below and **never commit this key to source control**.
-
-### Environment variables
-
-Create a `.env` at project root with the following keys:
-
-```env
-# OpenAI key used by the front-end dev server proxy (do NOT embed your key in public builds)
-# please keep your OpenAI key in VITE_APP_OPEN_API_KEY
-
-VITE_APP_OPEN_API_KEY=''
+## 🗂 Project Structure
 
 ```
+.
+├── public
+│   └── (static assets + index.html)
+├── src
+│   └── (React application source code, see below)
+├── .gitignore
+├── .prettierrc
+├── babel.config.cjs
+├── db.json
+├── eslint.config.js
+├── index.html
+├── jest.config.js
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── setupTests.js
+├── tailwind.config.js
+├── vite.config.js
+└── README.md
+```
 
-> Security note: **Never** commit your real OpenAI secret to source control. Use a backend proxy or serverless function that holds the key and performs the request on behalf of the client.
+### Src Folder Structure
 
-### Install & Run (development)
+```
+src
+├── App.jsx
+├── App.css
+├── assets/
+│   └── (images, icons, etc.)
+├── components/
+│   ├── ProgressBar/
+│   ├── GlobalErrorToast/
+│   └── ...
+├── pages/
+│   ├── NotFound
+│   ├── UserCreationForm
+│   └── ...
+├── store/
+│   ├── formSlice
+│   └── index.js
+│   └── ...
+├── hooks/
+│   └── useFetch.js
+│   └── ...
+├── network/
+│   └── axiosInstance.js
+├── utils/
+│   └── constants.js
+└── main.jsx
+```
+
+---
+
+## 🏁 Getting Started
+
+### Getting an OpenAI API Key
+
+1. **Create an OpenAI account**  
+   Sign up at [https://platform.openai.com/signup](https://platform.openai.com/signup).
+
+2. **Generate a key**  
+   Go to **View API keys** → **Create new secret key** once logged in.
+
+3. **Store it securely**  
+   Copy the key—this is your only time to see it.
+
+### Environment Variables
+
+Create a `.env` file at the project root:
+
+```env
+VITE_APP_OPEN_API_KEY=your_key_here
+```
+
+> **Security note:** Never commit your real key to source control.  
+
+### Install & Run
 
 ```bash
-# clone
 git clone https://github.com/SukhithaSunil/government-aid-application-with-AI-assistance
-cd community-aid-finance-portal
 
-# install
 npm install
-
 # start mock API (json-server)
 npm run start:json-server
-
-# dev
 npm run dev
-# app will run at http://localhost:3000
+# App will run at http://localhost:3000
 ```
 
 ### Build & Serve (production)
 
 ```bash
 npm run build
-# then serve the build directory with your static host of choice
+# Then deploy the build folder to your static host of choice
 ```
 
 ---
 
-## 🤖 OpenAI integration (Help Me Write)
+## 🤖 OpenAI Integration (Help Me Write)
 
 **Flow**
 
-1. User clicks `Help Me Write` next to a textarea in Step 3.
-2. Sends a request to `https://api.openai.com/v1/chat/completions` using `gpt-3.5-turbo`.
-3. The response shows in modal. User can `Accept` (replace textarea), `Edit`, or `Discard`.
+1. User clicks **Help Me Write** beside a Step 3 textarea.  
+2. The front-end sends a request to `https://api.openai.com/v1/chat/completions` using `gpt-3.5-turbo`.  
+3. The AI response appears in a modal where the user can **Accept**, **Edit**, or **Discard**.
 
-**Example prompt sent to OpenAI**
+**Example Prompt**
 
 ```json
 {
   "model": "gpt-3.5-turbo",
   "messages": [
-    { "role": "system", "content": "You are a helpful assistant that writes clear, concise
-    statements for social assistance applications. Keep tone respectful and factual." },
-    { "role": "user", "content": "I am unemployed with no income. Help me describe my
-    financial hardship in ~120 words, simple English." }
+    { "role": "system", "content": "You are a helpful assistant that writes clear, concise statements for social assistance applications. Keep tone respectful and factual." },
+    { "role": "user", "content": "I am unemployed with no income. Help me describe my financial hardship in ~120 words, simple English." }
   ]
 }
 ```
 
-**Error handling & UX**
-
-* Toast notifications surface any API errors clearly.
+*Any API error triggers a toast notification for visibility.*
 
 ---
 
-## ♿ UX, Accessibility & i18n
+## ♿ UX / Accessibility / i18n
 
-* Added aria-invalid and aria-describedby when an error is present. Screen readers can announce that the field is invalid and point to the error message.
-* Error Message with role="alert"The <p> element containing the validation message has role="alert", ensuring screen readers announce the error immediately when it appears.
-* Keyboard: Tab order logical, Enter to submit step, Esc to close modals.
-* Arabic support toggles layout to RTL and flips progress bar order.
-* Language switch available at all times and persisted across sessions.
-
----
-
-## 💾 Local save & mock submit
-
-* Form state saved to `localStorage` after each step.
-* On `Submit`, app calls a mocked endpoint (json-server) that returns success or simulated validation errors.
-* Toast notifications error states.
-* On success takes user to confirmation screen.
+* **Validation feedback:** Fields use `aria-invalid` + `aria-describedby` so screen readers announce errors.  
+* **Error messages:** `<p>` elements include `role="alert"` to ensure immediate announcement.  
+* **Keyboard support:** Logical tab order, Enter to submit a step, Esc to close modals.  
+* **Language switching:** Arabic toggles layout to RTL and flips progress bar order. Language choice persists across sessions.
 
 ---
 
-## 🏗 Architecture & decisions
+## 💾 Local Save & Mock Submit
 
-* **Why Redux Toolkit?** Cross-step state, persistence middleware, predictable updates.
+* Form state is saved to `localStorage` after each step.  
+* On **Submit**, the app calls the mock backend (`json-server`), which returns success or simulated validation errors.  
+* Toast notifications handle error states, and success shows a confirmation page.
 
-* **Why React Hook Form?** Minimal re-renders and easy integration with validation schema.
+---
 
-* **Tailwind + MUI:** Tailwind for layout + utility, MUI for accessible ready-made controls where needed.
+## 🏗 Architecture & Decisions
 
-* **Common fetch hook & Axios:** Simplifies and unifies API calls and error handling.
+* **Redux Toolkit** for multi-step cross-component state and persistence.  
+* **React Hook Form** + **Yup** for efficient validation and minimal re-renders.  
+* **Tailwind + MUI**: Tailwind for layout and utility classes; MUI for accessible components.  
+* **Common fetch hook & Axios** to unify API logic and error handling.  
+* **Lazy loading** of route-based components to reduce initial bundle size.  
+* **Error Boundary** to trap rendering errors and show fallback UI.
 
-* **Lazy loading**: Route-based code splitting to reduce initial bundle size.
+---
 
-* **Error boundary**: Captures runtime errors and displays a fallback UI without breaking the app.
+## 🔮 Improvements & Roadmap
+
+* Add end-to-end tests (Cypress or Playwright).  
+* Replace front-end OpenAI direct usage with a secure backend proxy.  
+* Add more languages beyond English and Arabic.  
+* Optional user authentication to let users resume across devices.
 
 ---
 
 ## 🐞 Troubleshooting
 
-* **AI fails / times out** — check network tab; ensure OpenAI key is valid.
-
-* **LocalStorage not restoring** — check storage.
-
-* **Mock API errors** — verify json-server is running on the correct port.
+* **AI fails/timeouts** — Check network calls & verify OpenAI key.  
+* **localStorage data missing** — Inspect browser storage.  
+* **Mock API errors** — Ensure `json-server` is running & endpoint is correct.
 
 ---
 
 ## 📄 License & Contact
 
-This project is MIT licensed. For questions, architecture notes or to request a walkthrough, contact: `Sukhitha Sunil <sukithasunil@gmail.com>`.
+This project is MIT licensed.  
+For questions, architecture notes, or a walkthrough, contact: **Sukhitha Sunil <sukithasunil@gmail.com>**
 
 ---
 
