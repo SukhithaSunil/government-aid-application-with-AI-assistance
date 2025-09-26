@@ -1,56 +1,59 @@
 import * as yup from 'yup'
-import {mobileNumberRegex, nameRegex, nationalIdRegex} from '../../util/constants'
+import {
+  mobileNumberRegex,
+  nameRegex,
+  nationalIdRegex,
+} from '../../util/constants'
+
 import PersonalInformation from './components/PersonalInformation'
 import FamilyandFinancialInfo from './components/FamilyandFinancialInfo'
 import SituationDetails from './components/SituationDetails'
 import Confirmation from './components/Confirmation'
 
-export const getStepsConfig = (t) => ({
+export const getStepsConfig = () => ({
   1: {
     component: <PersonalInformation />,
     schema: yup.object().shape({
       name: yup
         .string()
-        .required(t('validations.name'))
-        .matches(nameRegex, t('validations.name_invalid')),
+        .required('validations.name')
+        .matches(nameRegex, 'validations.name_invalid'),
       mail: yup
         .string()
-        .required(t('validations.mail'))
-        .email(t('validations.invalidMail')),
+        .required('validations.mail')
+        .email('validations.invalidMail'),
       nationalId: yup
         .string()
-        .required(t('validations.nationalId'))
-        .matches(nationalIdRegex, t('validations.idFormat')),
-      dateOfBirth: yup.date().required(t('validations.dateOfBirth')),
-      address: yup.string().required(t('validations.address')),
-      city: yup.string().required(t('validations.city')),
-      state: yup.string().required(t('validations.state')),
-      country: yup.string().required(t('validations.country')),
-      gender: yup.string().required(t('validations.gender')),
+        .required('validations.nationalId')
+        .matches(nationalIdRegex, 'validations.idFormat'),
+      dateOfBirth: yup.date().required('validations.dateOfBirth'),
+      address: yup.string().required('validations.address'),
+      city: yup.string().required('validations.city'),
+      state: yup.string().required('validations.state'),
+      country: yup.string().required('validations.country'),
+      gender: yup.string().required('validations.gender'),
       phone: yup
         .string()
-        .required(t('validations.phone'))
-        .matches(mobileNumberRegex, t('validations.phoneFormat')),
+        .required('validations.phone')
+        .matches(mobileNumberRegex, 'validations.phoneFormat'),
     }),
   },
   2: {
     component: <FamilyandFinancialInfo />,
     schema: yup.object().shape({
-      maritalStatus: yup.string().required(t('validations.maritalStatus')),
+      maritalStatus: yup.string().required('validations.maritalStatus'),
       dependents: yup
         .number()
-        .max(10, t('validations.maxDependents'))
-        .required(t('validations.dependentsRequired'))
-        .typeError(t('validations.dependents')),
-      employmentStatus: yup
-        .string()
-        .required(t('validations.employmentStatus')),
+        .max(10, 'validations.maxDependents')
+        .required('validations.dependentsRequired')
+        .typeError('validations.dependents'),
+      employmentStatus: yup.string().required('validations.employmentStatus'),
       monthlyIncome: yup
         .number()
-        .required(t('validations.monthlyIncomeRequired'))
-        .max(5000, t('validations.maxMonthlyIncome'))
-        .typeError(t('validations.inValidMonthlyIncome')),
-      housingStatus: yup.string().required(t('validations.housingStatus')),
+        .required('validations.monthlyIncomeRequired')
+        .max(5000, 'validations.maxMonthlyIncome')
+        .typeError('validations.inValidMonthlyIncome'),
+      housingStatus: yup.string().required('validations.housingStatus'),
     }),
   },
   3: {
@@ -58,13 +61,11 @@ export const getStepsConfig = (t) => ({
     schema: yup.object().shape({
       currentFinancialSituation: yup
         .string()
-        .required(t('validations.currentFinancialSituation')),
+        .required('validations.currentFinancialSituation'),
       employmentCircumstances: yup
         .string()
-        .required(t('validations.employmentCircumstances')),
-      reasonForApplying: yup
-        .string()
-        .required(t('validations.reasonForApplying')),
+        .required('validations.employmentCircumstances'),
+      reasonForApplying: yup.string().required('validations.reasonForApplying'),
     }),
   },
   4: {

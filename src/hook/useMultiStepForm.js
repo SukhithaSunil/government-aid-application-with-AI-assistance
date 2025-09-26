@@ -16,11 +16,11 @@ import {CREATE_USER_API_URL, DateFormat, HTTP_METHODS} from '../util/constants'
 import useFetch from './useFetch'
 
 export const useMultiStepForm = () => {
-  const {t, i18n} = useTranslation()
+  const {t} = useTranslation()
   const dispatch = useDispatch()
   const form = useSelector((state) => state.form)
   const {currentStep, completedStep, formState, loading} = form
-  const stepsConfig = useMemo(() => getStepsConfig(t), [i18n.language])
+  const stepsConfig = useMemo(() => getStepsConfig(), [])
   const currentSchema = stepsConfig[currentStep]?.schema
   const StepComponent = stepsConfig[currentStep]?.component
   const steps = useMemo(
