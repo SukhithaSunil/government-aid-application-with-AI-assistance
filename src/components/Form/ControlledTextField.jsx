@@ -1,6 +1,7 @@
 import {TextField, MenuItem, Box} from '@mui/material'
 import {Controller} from 'react-hook-form'
 import PropTypes from 'prop-types'
+import {useTranslation} from 'react-i18next'
 
 const ControlledTextField = ({
   control,
@@ -13,6 +14,7 @@ const ControlledTextField = ({
   options = [],
   isMultiLine = false,
 }) => {
+  const {t} = useTranslation()
   return (
     <Controller
       name={name}
@@ -49,7 +51,7 @@ const ControlledTextField = ({
               id={`${name}-error`}
               className={`text-sm h-5 mt-1 ${error ? 'text-red-500' : 'invisible'}`}
               role="alert">
-              {error?.message}
+              {t(error?.message)}
             </p>
           </Box>
         )
